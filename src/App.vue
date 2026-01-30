@@ -3,8 +3,9 @@ import { computed, ref } from 'vue';
 import DataCollectPage from './components/DataCollect/DataCollectPage.vue';
 import DataTransferPage from './components/DataTransfer/DataTransferPage.vue';
 import RobotProfile from './components/RobotProfile.vue';
+import MatchRecordsPage from './components/MatchRecordsPage.vue';
 
-type ScreenName = 'data-collect' | 'data-transfer' | 'match-records';
+type ScreenName = 'data-collect' | 'data-transfer' | 'match-records' | 'robot-profiles';
 
 const drawer = ref(false);
 const page = ref<ScreenName>('data-collect');
@@ -19,6 +20,8 @@ const pageTitle = computed(() => {
       return 'Data Transfer';
     case 'match-records':
       return 'Match Records';
+    case 'robot-profiles':
+      return 'Robot Profiles';
     default:
       return 'Scouting';
   }
@@ -47,6 +50,11 @@ const pageTitle = computed(() => {
             title="Match Records"
             @click="page = 'match-records'"
           />
+          <v-list-item
+            prepend-icon="mdi-chart-box"
+            title="Robot Profiles"
+            @click="page = 'robot-profiles'"
+          />
 
           <v-spacer />
           <div class="mr-2 mt-2 text-center">v{{ appVersion }}</div>
@@ -61,6 +69,7 @@ const pageTitle = computed(() => {
       <v-main style="min-height: 300px">
         <DataCollectPage v-if="page === 'data-collect'" />
         <DataTransferPage v-else-if="page === 'data-transfer'" />
+        <MatchRecordsPage v-else-if="page === 'match-records'" />
         <RobotProfile v-else />
       </v-main>
     </v-layout>

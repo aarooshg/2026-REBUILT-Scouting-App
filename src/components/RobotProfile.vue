@@ -71,11 +71,15 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   canGoUnderTrench: 'Can Under Trench',
 };
 
+type InnerColumnKey = keyof MatchRecord | 'delete';
+
 const innerHeaders = Object.entries(innerHeaderTitles).map(([key, title]) => ({
-  value: key as keyof MatchRecord,
+  value: key as InnerColumnKey,
   title,
-  sortable: true as const,
+  sortable: key !== 'delete',
 }));
+
+const innerHeadersNonDelete = computed(() => innerHeaders.filter((h) => h.value !== 'delete'));
 
 const headers = Object.entries(headerTitles).map(([key, title]) => ({
   value: key as keyof TeamProfile,
@@ -202,7 +206,7 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
             </template>
 
             <template
-              v-for="header in innerHeaders"
+              v-for="header in innerHeadersNonDelete"
               :key="header.value"
               v-slot:[`item.${header.value}`]="{ item }"
             >
