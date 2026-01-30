@@ -1,0 +1,226 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+import { csvify, generateTeamProfile, type MatchRecord, type TeamProfile } from '@/data';
+import { matchRecords, sortedMatchRecords } from '@/components/DataCollect/MatchRecords';
+import { troyargonautsprotobuf } from '@/protobuf/match-record';
+
+const search = ref('');
+
+function roundToDecimal(x: number, decimals: number) {
+  const multiplier = Math.pow(10, decimals);
+  return Math.round(x * multiplier) / multiplier;
+}
+
+const items = computed(() => {
+  return Object.values(sortedMatchRecords.value).map((teamMatchRecords) => {
+    const teamProfile = generateTeamProfile(teamMatchRecords);
+
+    for (const [key, value] of Object.entries(teamProfile)) {
+      if (typeof value === 'number') {
+        (teamProfile as unknown as Record<string, number>)[key] = roundToDecimal(value, 5);
+      }
+    }
+
+    for (const matchRecord of teamProfile.matchRecords) {
+      for (const [key, value] of Object.entries(matchRecord)) {
+        if (typeof value === 'number') {
+          (matchRecord as unknown as Record<string, number>)[key] = roundToDecimal(value, 5);
+        }
+      }
+    }
+
+    return teamProfile;
+  });
+});
+
+function climbLabel(level: number) {
+  switch (level) {
+    case troyargonautsprotobuf.ClimbLevel.LEVEL_1:
+      return 'Level 1';
+    case troyargonautsprotobuf.ClimbLevel.LEVEL_2:
+      return 'Level 2';
+    case troyargonautsprotobuf.ClimbLevel.LEVEL_3:
+      return 'Level 3';
+    default:
+      return 'None';
+  }
+}
+
+const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> = {
+  team: 'Team',
+  match: 'Match',
+  scouter: 'Scouter',
+  autonMainScore: 'Auton Main',
+  teleopMainScore: 'Teleop Main',
+  climbLevel: 'Climb',
+  canGoOverBump: 'Over Bump',
+  canGoUnderTrench: 'Under Trench',
+  notes: 'Notes',
+  delete: 'Delete',
+};
+
+const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
+  team: 'Team',
+  avgAutonMainScore: 'Avg Auton Main',
+  avgTeleopMainScore: 'Avg Teleop Main',
+  avgTotalMainScore: 'Avg Total Main',
+  canClimbLevel1: 'Can Climb L1',
+  canClimbLevel2: 'Can Climb L2',
+  canClimbLevel3: 'Can Climb L3',
+  canGoOverBump: 'Can Over Bump',
+  canGoUnderTrench: 'Can Under Trench',
+};
+
+const innerHeaders = Object.entries(innerHeaderTitles).map(([key, title]) => ({
+  value: key as keyof MatchRecord,
+  title,
+  sortable: true as const,
+}));
+
+const headers = Object.entries(headerTitles).map(([key, title]) => ({
+  value: key as keyof TeamProfile,
+  title,
+  sortable: true as const,
+}));
+
+const expanded = ref([]);
+
+function onDownloadCSV() {
+  const text = csvify(items.value, headerTitles);
+  const filename = `ArgoData-${Date.now()}.csv`;
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function deleteItem(itemId: string) {
+  const itemIndex = matchRecords.value.findIndex((mr) => mr.id === itemId);
+  if (itemIndex >= 0 && confirm('Are you sure you want to delete this match record?')) {
+    matchRecords.value.splice(itemIndex, 1);
+  }
+}
+
+const containsDuplicates = computed(() => {
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  for (const mr of matchRecords.value) {
+    const x = `${mr.team} - #${mr.match}`;
+    if (seen.has(x)) duplicates.add(x);
+    else seen.add(x);
+  }
+  if (duplicates.size > 0) {
+    return `Duplicate match records found: ${Array.from(duplicates).join(', ')}. Please delete them to avoid aggregation issues.`;
+  }
+  return null;
+});
+
+function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
+  const existingRecord = matchRecords.value.find((r) => r.id === item.id);
+  if (!existingRecord) {
+    alert('Something went wrong, match record not found.');
+    return;
+  }
+
+  const oldValue = existingRecord[header];
+  const newValueAsString = prompt(
+    `Edit ${header} for ${item.team} - ${item.match} (${item.scouter})`,
+    String(oldValue),
+  );
+  if (newValueAsString === '' || newValueAsString === null) return;
+
+  let newValue: string | number | boolean = newValueAsString;
+  if (typeof oldValue === 'boolean') {
+    newValue = newValueAsString.toLowerCase() === 'true';
+  } else if (typeof oldValue === 'number') {
+    newValue = Number(newValueAsString);
+    if (isNaN(newValue)) {
+      alert('Invalid input. Please enter a valid number.');
+      return;
+    }
+  } else {
+    newValue = newValueAsString.trim();
+  }
+
+  (existingRecord as Record<string, unknown>)[header] = newValue;
+}
+</script>
+
+<template>
+  <v-alert v-if="containsDuplicates" :text="containsDuplicates" type="error" />
+
+  <div class="d-flex">
+    <v-text-field
+      v-model="search"
+      label="Search"
+      prepend-inner-icon="mdi-magnify"
+      variant="solo"
+      hide-details
+      single-line
+      tile
+      class="ma-0 flex-grow-1"
+    />
+    <v-btn size="x-large" color="success" @click="onDownloadCSV">
+      <v-icon>mdi-content-save</v-icon>
+    </v-btn>
+  </div>
+
+  <v-data-table
+    :items="items"
+    show-expand
+    :headers="headers"
+    :search="search"
+    expand-on-click
+    v-model:expanded="expanded"
+    class="datatable"
+  >
+    <template v-slot:[`item.data-table-expand`]="{ internalItem, isExpanded, toggleExpand }">
+      <td>
+        <v-btn
+          :icon="isExpanded(internalItem) ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          size="small"
+          variant="plain"
+          @click="toggleExpand(internalItem)"
+        />
+      </td>
+    </template>
+
+    <template v-slot:expanded-row="{ columns, item }">
+      <tr>
+        <td :colspan="columns.length" style="background-color: #222">
+          <v-data-table
+            style="background-color: #222"
+            class="datatable"
+            :items="item.matchRecords"
+            :headers="innerHeaders"
+          >
+            <template v-slot:[`item.delete`]="{ item: mrItem }">
+              <v-btn icon="mdi-delete" variant="plain" color="red" @click="deleteItem(mrItem.id)" />
+            </template>
+
+            <template
+              v-for="header in innerHeaders"
+              :key="header.value"
+              v-slot:[`item.${header.value}`]="{ item }"
+            >
+              <td @dblclick="editMatchRecord(item, header.value)">
+                <span v-if="header.value === 'climbLevel'">{{ climbLabel(item.climbLevel) }}</span>
+                <span v-else>{{ item[header.value] }}</span>
+              </td>
+            </template>
+          </v-data-table>
+        </td>
+      </tr>
+    </template>
+  </v-data-table>
+</template>
+
+<style lang="css" scoped>
+:deep(.datatable tr:hover) {
+  background-color: rgba(255, 255, 255, 0.09);
+}
+</style>
+

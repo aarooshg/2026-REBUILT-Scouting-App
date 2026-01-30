@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package troyargonautsprotobuf;
+
+enum ClimbLevel {
+  CLIMB_NONE = 0;
+  LEVEL_1 = 1;
+  LEVEL_2 = 2;
+  LEVEL_3 = 3;
+}
+
+message MatchRecord {
+  string id = 1;
+
+  // identifiers
+  string team = 2;
+  string match = 3;
+  string scouter = 4;
+
+  // scoring (main area)
+  uint32 autonMainScore = 5;
+  uint32 teleopMainScore = 6;
+
+  // endgame
+  ClimbLevel climbLevel = 7;
+
+  // capabilities
+  bool canGoOverBump = 8;
+  bool canGoUnderTrench = 9;
+
+  // misc
+  string notes = 10;
+}
+
+message MatchRecords {
+  repeated MatchRecord records = 1;
+}
+
