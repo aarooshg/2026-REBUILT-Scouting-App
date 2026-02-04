@@ -12,7 +12,7 @@ function roundToDecimal(x: number, decimals: number) {
 }
 
 const items = computed(() => {
-  return Object.values(sortedMatchRecords.value).map((teamMatchRecords) => {
+  const allItems = Object.values(sortedMatchRecords.value).map((teamMatchRecords) => {
     const teamProfile = generateTeamProfile(teamMatchRecords);
 
     for (const [key, value] of Object.entries(teamProfile)) {
@@ -31,7 +31,27 @@ const items = computed(() => {
 
     return teamProfile;
   });
+
+  // Filter by selected team if one is selected
+  if (selectedTeam.value) {
+    return allItems.filter(item => item.team === selectedTeam.value);
+  }
+
+  return allItems;
 });
+
+const selectedTeam = ref<string | null>(null);
+
+function selectTeam(team: string) {
+  selectedTeam.value = team;
+  // Auto-expand the selected team - use team string as the ID
+  expanded.value = [team];
+}
+
+function clearTeamFilter() {
+  selectedTeam.value = null;
+  expanded.value = [];
+}
 
 function climbLabel(level: number) {
   switch (level) {
@@ -50,25 +70,33 @@ const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> =
   team: 'Team',
   match: 'Match',
   scouter: 'Scouter',
-  autonMainScore: 'Auton Main',
-  teleopMainScore: 'Teleop Main',
+  autonShotsAttempted: 'Auton Attempted',
+  autonShotsMade: 'Auton Made',
+  teleopShotsAttempted: 'Teleop Attempted',
+  teleopShotsMade: 'Teleop Made',
   climbLevel: 'Climb',
   canGoOverBump: 'Over Bump',
   canGoUnderTrench: 'Under Trench',
+  canClimbLevel1Auton: 'Auton L1 Climb',
   notes: 'Notes',
   delete: 'Delete',
 };
 
 const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   team: 'Team',
-  avgAutonMainScore: 'Avg Auton Main',
-  avgTeleopMainScore: 'Avg Teleop Main',
-  avgTotalMainScore: 'Avg Total Main',
+  avgAutonShotsAttempted: 'Avg Auton Attempted',
+  avgAutonShotsMade: 'Avg Auton Made',
+  avgAutonAccuracy: 'Avg Auton Accuracy %',
+  avgTeleopShotsAttempted: 'Avg Teleop Attempted',
+  avgTeleopShotsMade: 'Avg Teleop Made',
+  avgTeleopAccuracy: 'Avg Teleop Accuracy %',
+  avgTotalMainScore: 'Avg Total Made',
   canClimbLevel1: 'Can Climb L1',
   canClimbLevel2: 'Can Climb L2',
   canClimbLevel3: 'Can Climb L3',
   canGoOverBump: 'Can Over Bump',
   canGoUnderTrench: 'Can Under Trench',
+  canClimbLevel1Auton: 'Can Auton L1 Climb',
 };
 
 type InnerColumnKey = keyof MatchRecord | 'delete';
@@ -87,7 +115,8 @@ const headers = Object.entries(headerTitles).map(([key, title]) => ({
   sortable: true as const,
 }));
 
-const expanded = ref([]);
+
+const expanded = ref<readonly string[]>([]);
 
 function onDownloadCSV() {
   const text = csvify(items.value, headerTitles);
@@ -156,6 +185,10 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
 <template>
   <v-alert v-if="containsDuplicates" :text="containsDuplicates" type="error" />
 
+  <v-alert v-if="selectedTeam" type="info" closable @click:close="clearTeamFilter">
+    Showing only team {{ selectedTeam }}. Click X to show all teams.
+  </v-alert>
+
   <div class="d-flex">
     <v-text-field
       v-model="search"
@@ -167,6 +200,9 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
       tile
       class="ma-0 flex-grow-1"
     />
+    <v-btn v-if="selectedTeam" size="x-large" color="warning" @click="clearTeamFilter" class="mx-2">
+      <v-icon>mdi-filter-off</v-icon>
+    </v-btn>
     <v-btn size="x-large" color="success" @click="onDownloadCSV">
       <v-icon>mdi-content-save</v-icon>
     </v-btn>
@@ -192,6 +228,12 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
       </td>
     </template>
 
+    <template v-slot:[`item.team`]="{ item }">
+      <td @click="selectTeam(item.team)" style="cursor: pointer; text-decoration: underline;">
+        {{ item.team }}
+      </td>
+    </template>
+
     <template v-slot:expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length" style="background-color: #222">
@@ -210,9 +252,9 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
               :key="header.value"
               v-slot:[`item.${header.value}`]="{ item }"
             >
-              <td @dblclick="editMatchRecord(item, header.value)">
+              <td @dblclick="header.value !== 'delete' ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
                 <span v-if="header.value === 'climbLevel'">{{ climbLabel(item.climbLevel) }}</span>
-                <span v-else>{{ item[header.value] }}</span>
+                <span v-else-if="header.value !== 'delete'">{{ item[header.value as keyof MatchRecord] }}</span>
               </td>
             </template>
           </v-data-table>

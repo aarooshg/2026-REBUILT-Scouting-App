@@ -44,11 +44,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {string|null} [team] MatchRecord team
          * @property {string|null} [match] MatchRecord match
          * @property {string|null} [scouter] MatchRecord scouter
-         * @property {number|null} [autonMainScore] MatchRecord autonMainScore
-         * @property {number|null} [teleopMainScore] MatchRecord teleopMainScore
+         * @property {number|null} [autonShotsAttempted] MatchRecord autonShotsAttempted
+         * @property {number|null} [autonShotsMade] MatchRecord autonShotsMade
+         * @property {number|null} [teleopShotsAttempted] MatchRecord teleopShotsAttempted
+         * @property {number|null} [teleopShotsMade] MatchRecord teleopShotsMade
          * @property {troyargonautsprotobuf.ClimbLevel|null} [climbLevel] MatchRecord climbLevel
          * @property {boolean|null} [canGoOverBump] MatchRecord canGoOverBump
          * @property {boolean|null} [canGoUnderTrench] MatchRecord canGoUnderTrench
+         * @property {boolean|null} [canClimbLevel1Auton] MatchRecord canClimbLevel1Auton
          * @property {string|null} [notes] MatchRecord notes
          */
 
@@ -100,20 +103,36 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         MatchRecord.prototype.scouter = "";
 
         /**
-         * MatchRecord autonMainScore.
-         * @member {number} autonMainScore
+         * MatchRecord autonShotsAttempted.
+         * @member {number} autonShotsAttempted
          * @memberof troyargonautsprotobuf.MatchRecord
          * @instance
          */
-        MatchRecord.prototype.autonMainScore = 0;
+        MatchRecord.prototype.autonShotsAttempted = 0;
 
         /**
-         * MatchRecord teleopMainScore.
-         * @member {number} teleopMainScore
+         * MatchRecord autonShotsMade.
+         * @member {number} autonShotsMade
          * @memberof troyargonautsprotobuf.MatchRecord
          * @instance
          */
-        MatchRecord.prototype.teleopMainScore = 0;
+        MatchRecord.prototype.autonShotsMade = 0;
+
+        /**
+         * MatchRecord teleopShotsAttempted.
+         * @member {number} teleopShotsAttempted
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.teleopShotsAttempted = 0;
+
+        /**
+         * MatchRecord teleopShotsMade.
+         * @member {number} teleopShotsMade
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.teleopShotsMade = 0;
 
         /**
          * MatchRecord climbLevel.
@@ -138,6 +157,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @instance
          */
         MatchRecord.prototype.canGoUnderTrench = false;
+
+        /**
+         * MatchRecord canClimbLevel1Auton.
+         * @member {boolean} canClimbLevel1Auton
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.canClimbLevel1Auton = false;
 
         /**
          * MatchRecord notes.
@@ -179,18 +206,24 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.match);
             if (message.scouter != null && Object.hasOwnProperty.call(message, "scouter"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.scouter);
-            if (message.autonMainScore != null && Object.hasOwnProperty.call(message, "autonMainScore"))
-                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.autonMainScore);
-            if (message.teleopMainScore != null && Object.hasOwnProperty.call(message, "teleopMainScore"))
-                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.teleopMainScore);
+            if (message.autonShotsAttempted != null && Object.hasOwnProperty.call(message, "autonShotsAttempted"))
+                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.autonShotsAttempted);
+            if (message.autonShotsMade != null && Object.hasOwnProperty.call(message, "autonShotsMade"))
+                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.autonShotsMade);
+            if (message.teleopShotsAttempted != null && Object.hasOwnProperty.call(message, "teleopShotsAttempted"))
+                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.teleopShotsAttempted);
+            if (message.teleopShotsMade != null && Object.hasOwnProperty.call(message, "teleopShotsMade"))
+                writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.teleopShotsMade);
             if (message.climbLevel != null && Object.hasOwnProperty.call(message, "climbLevel"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.climbLevel);
+                writer.uint32(/* id 9, wireType 0 =*/72).int32(message.climbLevel);
             if (message.canGoOverBump != null && Object.hasOwnProperty.call(message, "canGoOverBump"))
-                writer.uint32(/* id 8, wireType 0 =*/64).bool(message.canGoOverBump);
+                writer.uint32(/* id 10, wireType 0 =*/80).bool(message.canGoOverBump);
             if (message.canGoUnderTrench != null && Object.hasOwnProperty.call(message, "canGoUnderTrench"))
-                writer.uint32(/* id 9, wireType 0 =*/72).bool(message.canGoUnderTrench);
+                writer.uint32(/* id 11, wireType 0 =*/88).bool(message.canGoUnderTrench);
             if (message.notes != null && Object.hasOwnProperty.call(message, "notes"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.notes);
+                writer.uint32(/* id 12, wireType 2 =*/98).string(message.notes);
+            if (message.canClimbLevel1Auton != null && Object.hasOwnProperty.call(message, "canClimbLevel1Auton"))
+                writer.uint32(/* id 13, wireType 0 =*/104).bool(message.canClimbLevel1Auton);
             return writer;
         };
 
@@ -244,26 +277,38 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                         break;
                     }
                 case 5: {
-                        message.autonMainScore = reader.uint32();
+                        message.autonShotsAttempted = reader.uint32();
                         break;
                     }
                 case 6: {
-                        message.teleopMainScore = reader.uint32();
+                        message.autonShotsMade = reader.uint32();
                         break;
                     }
                 case 7: {
-                        message.climbLevel = reader.int32();
+                        message.teleopShotsAttempted = reader.uint32();
                         break;
                     }
                 case 8: {
-                        message.canGoOverBump = reader.bool();
+                        message.teleopShotsMade = reader.uint32();
                         break;
                     }
                 case 9: {
-                        message.canGoUnderTrench = reader.bool();
+                        message.climbLevel = reader.int32();
                         break;
                     }
                 case 10: {
+                        message.canGoOverBump = reader.bool();
+                        break;
+                    }
+                case 11: {
+                        message.canGoUnderTrench = reader.bool();
+                        break;
+                    }
+                case 13: {
+                        message.canClimbLevel1Auton = reader.bool();
+                        break;
+                    }
+                case 12: {
                         message.notes = reader.string();
                         break;
                     }
@@ -314,12 +359,18 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.scouter != null && message.hasOwnProperty("scouter"))
                 if (!$util.isString(message.scouter))
                     return "scouter: string expected";
-            if (message.autonMainScore != null && message.hasOwnProperty("autonMainScore"))
-                if (!$util.isInteger(message.autonMainScore))
-                    return "autonMainScore: integer expected";
-            if (message.teleopMainScore != null && message.hasOwnProperty("teleopMainScore"))
-                if (!$util.isInteger(message.teleopMainScore))
-                    return "teleopMainScore: integer expected";
+            if (message.autonShotsAttempted != null && message.hasOwnProperty("autonShotsAttempted"))
+                if (!$util.isInteger(message.autonShotsAttempted))
+                    return "autonShotsAttempted: integer expected";
+            if (message.autonShotsMade != null && message.hasOwnProperty("autonShotsMade"))
+                if (!$util.isInteger(message.autonShotsMade))
+                    return "autonShotsMade: integer expected";
+            if (message.teleopShotsAttempted != null && message.hasOwnProperty("teleopShotsAttempted"))
+                if (!$util.isInteger(message.teleopShotsAttempted))
+                    return "teleopShotsAttempted: integer expected";
+            if (message.teleopShotsMade != null && message.hasOwnProperty("teleopShotsMade"))
+                if (!$util.isInteger(message.teleopShotsMade))
+                    return "teleopShotsMade: integer expected";
             if (message.climbLevel != null && message.hasOwnProperty("climbLevel"))
                 switch (message.climbLevel) {
                 default:
@@ -336,6 +387,9 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.canGoUnderTrench != null && message.hasOwnProperty("canGoUnderTrench"))
                 if (typeof message.canGoUnderTrench !== "boolean")
                     return "canGoUnderTrench: boolean expected";
+            if (message.canClimbLevel1Auton != null && message.hasOwnProperty("canClimbLevel1Auton"))
+                if (typeof message.canClimbLevel1Auton !== "boolean")
+                    return "canClimbLevel1Auton: boolean expected";
             if (message.notes != null && message.hasOwnProperty("notes"))
                 if (!$util.isString(message.notes))
                     return "notes: string expected";
@@ -362,10 +416,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.match = String(object.match);
             if (object.scouter != null)
                 message.scouter = String(object.scouter);
-            if (object.autonMainScore != null)
-                message.autonMainScore = object.autonMainScore >>> 0;
-            if (object.teleopMainScore != null)
-                message.teleopMainScore = object.teleopMainScore >>> 0;
+            if (object.autonShotsAttempted != null)
+                message.autonShotsAttempted = object.autonShotsAttempted >>> 0;
+            if (object.autonShotsMade != null)
+                message.autonShotsMade = object.autonShotsMade >>> 0;
+            if (object.teleopShotsAttempted != null)
+                message.teleopShotsAttempted = object.teleopShotsAttempted >>> 0;
+            if (object.teleopShotsMade != null)
+                message.teleopShotsMade = object.teleopShotsMade >>> 0;
             switch (object.climbLevel) {
             default:
                 if (typeof object.climbLevel === "number") {
@@ -394,6 +452,8 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.canGoOverBump = Boolean(object.canGoOverBump);
             if (object.canGoUnderTrench != null)
                 message.canGoUnderTrench = Boolean(object.canGoUnderTrench);
+            if (object.canClimbLevel1Auton != null)
+                message.canClimbLevel1Auton = Boolean(object.canClimbLevel1Auton);
             if (object.notes != null)
                 message.notes = String(object.notes);
             return message;
@@ -417,12 +477,15 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.team = "";
                 object.match = "";
                 object.scouter = "";
-                object.autonMainScore = 0;
-                object.teleopMainScore = 0;
+                object.autonShotsAttempted = 0;
+                object.autonShotsMade = 0;
+                object.teleopShotsAttempted = 0;
+                object.teleopShotsMade = 0;
                 object.climbLevel = options.enums === String ? "CLIMB_NONE" : 0;
                 object.canGoOverBump = false;
                 object.canGoUnderTrench = false;
                 object.notes = "";
+                object.canClimbLevel1Auton = false;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -432,10 +495,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.match = message.match;
             if (message.scouter != null && message.hasOwnProperty("scouter"))
                 object.scouter = message.scouter;
-            if (message.autonMainScore != null && message.hasOwnProperty("autonMainScore"))
-                object.autonMainScore = message.autonMainScore;
-            if (message.teleopMainScore != null && message.hasOwnProperty("teleopMainScore"))
-                object.teleopMainScore = message.teleopMainScore;
+            if (message.autonShotsAttempted != null && message.hasOwnProperty("autonShotsAttempted"))
+                object.autonShotsAttempted = message.autonShotsAttempted;
+            if (message.autonShotsMade != null && message.hasOwnProperty("autonShotsMade"))
+                object.autonShotsMade = message.autonShotsMade;
+            if (message.teleopShotsAttempted != null && message.hasOwnProperty("teleopShotsAttempted"))
+                object.teleopShotsAttempted = message.teleopShotsAttempted;
+            if (message.teleopShotsMade != null && message.hasOwnProperty("teleopShotsMade"))
+                object.teleopShotsMade = message.teleopShotsMade;
             if (message.climbLevel != null && message.hasOwnProperty("climbLevel"))
                 object.climbLevel = options.enums === String ? $root.troyargonautsprotobuf.ClimbLevel[message.climbLevel] === undefined ? message.climbLevel : $root.troyargonautsprotobuf.ClimbLevel[message.climbLevel] : message.climbLevel;
             if (message.canGoOverBump != null && message.hasOwnProperty("canGoOverBump"))
@@ -444,6 +511,8 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.canGoUnderTrench = message.canGoUnderTrench;
             if (message.notes != null && message.hasOwnProperty("notes"))
                 object.notes = message.notes;
+            if (message.canClimbLevel1Auton != null && message.hasOwnProperty("canClimbLevel1Auton"))
+                object.canClimbLevel1Auton = message.canClimbLevel1Auton;
             return object;
         };
 

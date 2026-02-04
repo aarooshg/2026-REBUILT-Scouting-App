@@ -23,6 +23,10 @@ const phasePromptOpen = ref(false);
 const phasePromptText = ref('');
 const phasePromptNextPhase = ref<Exclude<MatchPhase, 'prematch'> | null>(null);
 
+// Track which phase transitions have been acknowledged to prevent re-prompting
+const autonToTeleopAcknowledged = ref(false);
+const teleopToPostmatchAcknowledged = ref(false);
+
 const { pause, resume, isActive } = useIntervalFn(
   () => {
     if (matchEnded.value) return;
@@ -37,7 +41,8 @@ const { pause, resume, isActive } = useIntervalFn(
     if (
       matchPhase.value === 'auton' &&
       elapsedTimeMs.value >= autonTimeMs &&
-      phasePromptOpen.value === false
+      phasePromptOpen.value === false &&
+      !autonToTeleopAcknowledged.value
     ) {
       pauseTimer();
       phasePromptText.value = 'Auton over — switching to teleop';
@@ -49,7 +54,8 @@ const { pause, resume, isActive } = useIntervalFn(
     if (
       matchPhase.value === 'teleop' &&
       elapsedTimeMs.value >= totalMatchTimeMs &&
-      phasePromptOpen.value === false
+      phasePromptOpen.value === false &&
+      !teleopToPostmatchAcknowledged.value
     ) {
       pauseTimer();
       matchEnded.value = true; // hard-stop timer at match end
@@ -64,6 +70,11 @@ const { pause, resume, isActive } = useIntervalFn(
 
 /** tabs are disabled before match starts, to force prematch first */
 const disableTabs = computed(() => !matchStarted.value);
+
+/** Allow users to navigate freely between tabs once match has started */
+const canNavigateToAuton = computed(() => matchStarted.value);
+const canNavigateToTeleop = computed(() => matchStarted.value);
+const canNavigateToPostmatch = computed(() => matchStarted.value);
 
 function startMatch() {
   elapsedTimeMs.value = 0;
@@ -88,6 +99,13 @@ function onPhasePromptOk() {
 
   if (!next) return;
 
+  // Mark this transition as acknowledged
+  if (next === 'teleop') {
+    autonToTeleopAcknowledged.value = true;
+  } else if (next === 'postmatch') {
+    teleopToPostmatchAcknowledged.value = true;
+  }
+
   matchPhase.value = next;
 
   // match end: leave paused on postmatch (user can manually resume if they want)
@@ -103,6 +121,10 @@ function resetDataCollection() {
   matchEnded.value = false;
   matchPhase.value = 'prematch';
   pauseTimer();
+  
+  // Reset phase transition acknowledgments
+  autonToTeleopAcknowledged.value = false;
+  teleopToPostmatchAcknowledged.value = false;
 
   const preserved: Pick<MatchRecord, 'scouter'> = {
     scouter: matchRecord.value.scouter,
@@ -141,9 +163,9 @@ function onSaveBtn() {
 
   <v-tabs v-model="matchPhase" bg-color="secondary" color="white" align-tabs="center">
     <v-tab value="prematch">Pre-match</v-tab>
-    <v-tab value="auton" :disabled="disableTabs">Auton</v-tab>
-    <v-tab value="teleop" :disabled="disableTabs">Teleop</v-tab>
-    <v-tab value="postmatch" :disabled="disableTabs">Post-match</v-tab>
+    <v-tab value="auton" :disabled="!canNavigateToAuton">Auton</v-tab>
+    <v-tab value="teleop" :disabled="!canNavigateToTeleop">Teleop</v-tab>
+    <v-tab value="postmatch" :disabled="!canNavigateToPostmatch">Post-match</v-tab>
   </v-tabs>
 
   <div class="ma-2 pa-2">

@@ -18,18 +18,21 @@ message MatchRecord {
   string scouter = 4;
 
   // scoring (main area)
-  uint32 autonMainScore = 5;
-  uint32 teleopMainScore = 6;
+  uint32 autonShotsAttempted = 5;
+  uint32 autonShotsMade = 6;
+  uint32 teleopShotsAttempted = 7;
+  uint32 teleopShotsMade = 8;
 
   // endgame
-  ClimbLevel climbLevel = 7;
+  ClimbLevel climbLevel = 9;
 
   // capabilities
-  bool canGoOverBump = 8;
-  bool canGoUnderTrench = 9;
+  bool canGoOverBump = 10;
+  bool canGoUnderTrench = 11;
+  bool canClimbLevel1Auton = 13;
 
   // misc
-  string notes = 10;
+  string notes = 12;
 }
 
 message MatchRecords {

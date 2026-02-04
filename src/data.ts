@@ -6,13 +6,16 @@ export type MatchRecord = {
   match: string;
   scouter: string;
 
-  autonMainScore: number;
-  teleopMainScore: number;
+  autonShotsAttempted: number;
+  autonShotsMade: number;
+  teleopShotsAttempted: number;
+  teleopShotsMade: number;
 
   climbLevel: troyargonautsprotobuf.ClimbLevel;
 
   canGoOverBump: boolean;
   canGoUnderTrench: boolean;
+  canClimbLevel1Auton: boolean;
 
   notes: string;
 };
@@ -21,8 +24,12 @@ export type TeamProfile = {
   team: string;
   matchRecords: MatchRecord[];
 
-  avgAutonMainScore: number;
-  avgTeleopMainScore: number;
+  avgAutonShotsAttempted: number;
+  avgAutonShotsMade: number;
+  avgAutonAccuracy: number;
+  avgTeleopShotsAttempted: number;
+  avgTeleopShotsMade: number;
+  avgTeleopAccuracy: number;
   avgTotalMainScore: number;
 
   canClimbLevel1: boolean;
@@ -31,6 +38,7 @@ export type TeamProfile = {
 
   canGoOverBump: boolean;
   canGoUnderTrench: boolean;
+  canClimbLevel1Auton: boolean;
 };
 
 export type TeamProfiles = {
@@ -46,17 +54,22 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
 
   let canGoOverBump = false;
   let canGoUnderTrench = false;
+  let canClimbLevel1Auton = false;
 
   const sums = {
-    autonMainScore: 0,
-    teleopMainScore: 0,
+    autonShotsAttempted: 0,
+    autonShotsMade: 0,
+    teleopShotsAttempted: 0,
+    teleopShotsMade: 0,
   };
 
   for (const record of records) {
     if (record.team) team = record.team;
 
-    sums.autonMainScore += record.autonMainScore || 0;
-    sums.teleopMainScore += record.teleopMainScore || 0;
+    sums.autonShotsAttempted += record.autonShotsAttempted || 0;
+    sums.autonShotsMade += record.autonShotsMade || 0;
+    sums.teleopShotsAttempted += record.teleopShotsAttempted || 0;
+    sums.teleopShotsMade += record.teleopShotsMade || 0;
 
     if (record.climbLevel === troyargonautsprotobuf.ClimbLevel.LEVEL_1) canClimbLevel1 = true;
     if (record.climbLevel === troyargonautsprotobuf.ClimbLevel.LEVEL_2) canClimbLevel2 = true;
@@ -64,23 +77,39 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
 
     if (record.canGoOverBump) canGoOverBump = true;
     if (record.canGoUnderTrench) canGoUnderTrench = true;
+    if (record.canClimbLevel1Auton) canClimbLevel1Auton = true;
   }
 
-  const avgAutonMainScore = records.length ? sums.autonMainScore / records.length : 0;
-  const avgTeleopMainScore = records.length ? sums.teleopMainScore / records.length : 0;
-  const avgTotalMainScore = avgAutonMainScore + avgTeleopMainScore;
+  const avgAutonShotsAttempted = records.length ? sums.autonShotsAttempted / records.length : 0;
+  const avgAutonShotsMade = records.length ? sums.autonShotsMade / records.length : 0;
+  const avgAutonAccuracy = sums.autonShotsAttempted > 0
+    ? (sums.autonShotsMade / sums.autonShotsAttempted) * 100
+    : 0;
+
+  const avgTeleopShotsAttempted = records.length ? sums.teleopShotsAttempted / records.length : 0;
+  const avgTeleopShotsMade = records.length ? sums.teleopShotsMade / records.length : 0;
+  const avgTeleopAccuracy = sums.teleopShotsAttempted > 0
+    ? (sums.teleopShotsMade / sums.teleopShotsAttempted) * 100
+    : 0;
+
+  const avgTotalMainScore = avgAutonShotsMade + avgTeleopShotsMade;
 
   return {
     team,
     matchRecords: records,
-    avgAutonMainScore,
-    avgTeleopMainScore,
+    avgAutonShotsAttempted,
+    avgAutonShotsMade,
+    avgAutonAccuracy,
+    avgTeleopShotsAttempted,
+    avgTeleopShotsMade,
+    avgTeleopAccuracy,
     avgTotalMainScore,
     canClimbLevel1,
     canClimbLevel2,
     canClimbLevel3,
     canGoOverBump,
     canGoUnderTrench,
+    canClimbLevel1Auton,
   };
 }
 

@@ -26,11 +26,17 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter */
         scouter?: (string|null);
 
-        /** MatchRecord autonMainScore */
-        autonMainScore?: (number|null);
+        /** MatchRecord autonShotsAttempted */
+        autonShotsAttempted?: (number|null);
 
-        /** MatchRecord teleopMainScore */
-        teleopMainScore?: (number|null);
+        /** MatchRecord autonShotsMade */
+        autonShotsMade?: (number|null);
+
+        /** MatchRecord teleopShotsAttempted */
+        teleopShotsAttempted?: (number|null);
+
+        /** MatchRecord teleopShotsMade */
+        teleopShotsMade?: (number|null);
 
         /** MatchRecord climbLevel */
         climbLevel?: (troyargonautsprotobuf.ClimbLevel|null);
@@ -40,6 +46,9 @@ export namespace troyargonautsprotobuf {
 
         /** MatchRecord canGoUnderTrench */
         canGoUnderTrench?: (boolean|null);
+
+        /** MatchRecord canClimbLevel1Auton */
+        canClimbLevel1Auton?: (boolean|null);
 
         /** MatchRecord notes */
         notes?: (string|null);
@@ -66,11 +75,17 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter. */
         public scouter: string;
 
-        /** MatchRecord autonMainScore. */
-        public autonMainScore: number;
+        /** MatchRecord autonShotsAttempted. */
+        public autonShotsAttempted: number;
 
-        /** MatchRecord teleopMainScore. */
-        public teleopMainScore: number;
+        /** MatchRecord autonShotsMade. */
+        public autonShotsMade: number;
+
+        /** MatchRecord teleopShotsAttempted. */
+        public teleopShotsAttempted: number;
+
+        /** MatchRecord teleopShotsMade. */
+        public teleopShotsMade: number;
 
         /** MatchRecord climbLevel. */
         public climbLevel: troyargonautsprotobuf.ClimbLevel;
@@ -80,6 +95,9 @@ export namespace troyargonautsprotobuf {
 
         /** MatchRecord canGoUnderTrench. */
         public canGoUnderTrench: boolean;
+
+        /** MatchRecord canClimbLevel1Auton. */
+        public canClimbLevel1Auton: boolean;
 
         /** MatchRecord notes. */
         public notes: string;

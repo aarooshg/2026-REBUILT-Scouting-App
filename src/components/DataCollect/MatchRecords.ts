@@ -14,13 +14,16 @@ export function initMatchRecord(): MatchRecord {
     match: '',
     scouter: '',
 
-    autonMainScore: 0,
-    teleopMainScore: 0,
+    autonShotsAttempted: 0,
+    autonShotsMade: 0,
+    teleopShotsAttempted: 0,
+    teleopShotsMade: 0,
 
     climbLevel: troyargonautsprotobuf.ClimbLevel.CLIMB_NONE,
 
     canGoOverBump: false,
     canGoUnderTrench: false,
+    canClimbLevel1Auton: false,
 
     notes: '',
   };
