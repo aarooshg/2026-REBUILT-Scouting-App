@@ -81,6 +81,8 @@ function startMatch() {
   matchStarted.value = true;
   matchEnded.value = false;
   matchPhase.value = 'auton';
+  // Initialize auton shots attempted with preloaded game elements
+  matchRecord.value.autonShotsAttempted = matchRecord.value.preloadedGameElements;
   resume();
 }
 

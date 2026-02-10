@@ -47,6 +47,17 @@ const prematchFormValid = computed(() => {
       :disabled="disabled"
     />
 
+    <v-text-field
+      label="Preloaded Game Elements"
+      type="number"
+      variant="outlined"
+      class="mt-2"
+      v-model.number="matchRecord.preloadedGameElements"
+      :rules="[(value) => (value >= 0) || 'Must be 0 or greater']"
+      :disabled="disabled"
+      hint="Number of game pieces loaded at start"
+    />
+
     <v-btn
       :disabled="disabled || !prematchFormValid"
       color="accent"

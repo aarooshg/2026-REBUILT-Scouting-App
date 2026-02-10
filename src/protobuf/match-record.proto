@@ -17,11 +17,14 @@ message MatchRecord {
   string match = 3;
   string scouter = 4;
 
+  // prematch
+  uint32 preloadedGameElements = 14;
+
   // scoring (main area)
-  uint32 autonShotsAttempted = 5;
-  uint32 autonShotsMade = 6;
-  uint32 teleopShotsAttempted = 7;
-  uint32 teleopShotsMade = 8;
+  uint32 autonShotsMissed = 5;
+  uint32 autonShotsAttempted = 6;
+  uint32 teleopShotsMissed = 7;
+  uint32 teleopShotsAttempted = 8;
 
   // endgame
   ClimbLevel climbLevel = 9;
@@ -30,6 +33,8 @@ message MatchRecord {
   bool canGoOverBump = 10;
   bool canGoUnderTrench = 11;
   bool canClimbLevel1Auton = 13;
+  bool neutralZoneFeedingAuton = 15;
+  bool neutralZoneFeedingTeleop = 16;
 
   // misc
   string notes = 12;

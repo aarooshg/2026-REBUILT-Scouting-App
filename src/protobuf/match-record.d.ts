@@ -26,17 +26,20 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter */
         scouter?: (string|null);
 
+        /** MatchRecord preloadedGameElements */
+        preloadedGameElements?: (number|null);
+
+        /** MatchRecord autonShotsMissed */
+        autonShotsMissed?: (number|null);
+
         /** MatchRecord autonShotsAttempted */
         autonShotsAttempted?: (number|null);
 
-        /** MatchRecord autonShotsMade */
-        autonShotsMade?: (number|null);
+        /** MatchRecord teleopShotsMissed */
+        teleopShotsMissed?: (number|null);
 
         /** MatchRecord teleopShotsAttempted */
         teleopShotsAttempted?: (number|null);
-
-        /** MatchRecord teleopShotsMade */
-        teleopShotsMade?: (number|null);
 
         /** MatchRecord climbLevel */
         climbLevel?: (troyargonautsprotobuf.ClimbLevel|null);
@@ -49,6 +52,12 @@ export namespace troyargonautsprotobuf {
 
         /** MatchRecord canClimbLevel1Auton */
         canClimbLevel1Auton?: (boolean|null);
+
+        /** MatchRecord neutralZoneFeedingAuton */
+        neutralZoneFeedingAuton?: (boolean|null);
+
+        /** MatchRecord neutralZoneFeedingTeleop */
+        neutralZoneFeedingTeleop?: (boolean|null);
 
         /** MatchRecord notes */
         notes?: (string|null);
@@ -75,17 +84,20 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter. */
         public scouter: string;
 
+        /** MatchRecord preloadedGameElements. */
+        public preloadedGameElements: number;
+
+        /** MatchRecord autonShotsMissed. */
+        public autonShotsMissed: number;
+
         /** MatchRecord autonShotsAttempted. */
         public autonShotsAttempted: number;
 
-        /** MatchRecord autonShotsMade. */
-        public autonShotsMade: number;
+        /** MatchRecord teleopShotsMissed. */
+        public teleopShotsMissed: number;
 
         /** MatchRecord teleopShotsAttempted. */
         public teleopShotsAttempted: number;
-
-        /** MatchRecord teleopShotsMade. */
-        public teleopShotsMade: number;
 
         /** MatchRecord climbLevel. */
         public climbLevel: troyargonautsprotobuf.ClimbLevel;
@@ -98,6 +110,12 @@ export namespace troyargonautsprotobuf {
 
         /** MatchRecord canClimbLevel1Auton. */
         public canClimbLevel1Auton: boolean;
+
+        /** MatchRecord neutralZoneFeedingAuton. */
+        public neutralZoneFeedingAuton: boolean;
+
+        /** MatchRecord neutralZoneFeedingTeleop. */
+        public neutralZoneFeedingTeleop: boolean;
 
         /** MatchRecord notes. */
         public notes: string;

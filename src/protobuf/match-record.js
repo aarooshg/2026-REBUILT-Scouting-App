@@ -44,14 +44,17 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {string|null} [team] MatchRecord team
          * @property {string|null} [match] MatchRecord match
          * @property {string|null} [scouter] MatchRecord scouter
+         * @property {number|null} [preloadedGameElements] MatchRecord preloadedGameElements
+         * @property {number|null} [autonShotsMissed] MatchRecord autonShotsMissed
          * @property {number|null} [autonShotsAttempted] MatchRecord autonShotsAttempted
-         * @property {number|null} [autonShotsMade] MatchRecord autonShotsMade
+         * @property {number|null} [teleopShotsMissed] MatchRecord teleopShotsMissed
          * @property {number|null} [teleopShotsAttempted] MatchRecord teleopShotsAttempted
-         * @property {number|null} [teleopShotsMade] MatchRecord teleopShotsMade
          * @property {troyargonautsprotobuf.ClimbLevel|null} [climbLevel] MatchRecord climbLevel
          * @property {boolean|null} [canGoOverBump] MatchRecord canGoOverBump
          * @property {boolean|null} [canGoUnderTrench] MatchRecord canGoUnderTrench
          * @property {boolean|null} [canClimbLevel1Auton] MatchRecord canClimbLevel1Auton
+         * @property {boolean|null} [neutralZoneFeedingAuton] MatchRecord neutralZoneFeedingAuton
+         * @property {boolean|null} [neutralZoneFeedingTeleop] MatchRecord neutralZoneFeedingTeleop
          * @property {string|null} [notes] MatchRecord notes
          */
 
@@ -103,6 +106,22 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         MatchRecord.prototype.scouter = "";
 
         /**
+         * MatchRecord preloadedGameElements.
+         * @member {number} preloadedGameElements
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.preloadedGameElements = 0;
+
+        /**
+         * MatchRecord autonShotsMissed.
+         * @member {number} autonShotsMissed
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.autonShotsMissed = 0;
+
+        /**
          * MatchRecord autonShotsAttempted.
          * @member {number} autonShotsAttempted
          * @memberof troyargonautsprotobuf.MatchRecord
@@ -111,12 +130,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         MatchRecord.prototype.autonShotsAttempted = 0;
 
         /**
-         * MatchRecord autonShotsMade.
-         * @member {number} autonShotsMade
+         * MatchRecord teleopShotsMissed.
+         * @member {number} teleopShotsMissed
          * @memberof troyargonautsprotobuf.MatchRecord
          * @instance
          */
-        MatchRecord.prototype.autonShotsMade = 0;
+        MatchRecord.prototype.teleopShotsMissed = 0;
 
         /**
          * MatchRecord teleopShotsAttempted.
@@ -125,14 +144,6 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @instance
          */
         MatchRecord.prototype.teleopShotsAttempted = 0;
-
-        /**
-         * MatchRecord teleopShotsMade.
-         * @member {number} teleopShotsMade
-         * @memberof troyargonautsprotobuf.MatchRecord
-         * @instance
-         */
-        MatchRecord.prototype.teleopShotsMade = 0;
 
         /**
          * MatchRecord climbLevel.
@@ -165,6 +176,22 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @instance
          */
         MatchRecord.prototype.canClimbLevel1Auton = false;
+
+        /**
+         * MatchRecord neutralZoneFeedingAuton.
+         * @member {boolean} neutralZoneFeedingAuton
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.neutralZoneFeedingAuton = false;
+
+        /**
+         * MatchRecord neutralZoneFeedingTeleop.
+         * @member {boolean} neutralZoneFeedingTeleop
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.neutralZoneFeedingTeleop = false;
 
         /**
          * MatchRecord notes.
@@ -206,14 +233,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.match);
             if (message.scouter != null && Object.hasOwnProperty.call(message, "scouter"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.scouter);
+            if (message.autonShotsMissed != null && Object.hasOwnProperty.call(message, "autonShotsMissed"))
+                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.autonShotsMissed);
             if (message.autonShotsAttempted != null && Object.hasOwnProperty.call(message, "autonShotsAttempted"))
-                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.autonShotsAttempted);
-            if (message.autonShotsMade != null && Object.hasOwnProperty.call(message, "autonShotsMade"))
-                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.autonShotsMade);
+                writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.autonShotsAttempted);
+            if (message.teleopShotsMissed != null && Object.hasOwnProperty.call(message, "teleopShotsMissed"))
+                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.teleopShotsMissed);
             if (message.teleopShotsAttempted != null && Object.hasOwnProperty.call(message, "teleopShotsAttempted"))
-                writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.teleopShotsAttempted);
-            if (message.teleopShotsMade != null && Object.hasOwnProperty.call(message, "teleopShotsMade"))
-                writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.teleopShotsMade);
+                writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.teleopShotsAttempted);
             if (message.climbLevel != null && Object.hasOwnProperty.call(message, "climbLevel"))
                 writer.uint32(/* id 9, wireType 0 =*/72).int32(message.climbLevel);
             if (message.canGoOverBump != null && Object.hasOwnProperty.call(message, "canGoOverBump"))
@@ -224,6 +251,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 writer.uint32(/* id 12, wireType 2 =*/98).string(message.notes);
             if (message.canClimbLevel1Auton != null && Object.hasOwnProperty.call(message, "canClimbLevel1Auton"))
                 writer.uint32(/* id 13, wireType 0 =*/104).bool(message.canClimbLevel1Auton);
+            if (message.preloadedGameElements != null && Object.hasOwnProperty.call(message, "preloadedGameElements"))
+                writer.uint32(/* id 14, wireType 0 =*/112).uint32(message.preloadedGameElements);
+            if (message.neutralZoneFeedingAuton != null && Object.hasOwnProperty.call(message, "neutralZoneFeedingAuton"))
+                writer.uint32(/* id 15, wireType 0 =*/120).bool(message.neutralZoneFeedingAuton);
+            if (message.neutralZoneFeedingTeleop != null && Object.hasOwnProperty.call(message, "neutralZoneFeedingTeleop"))
+                writer.uint32(/* id 16, wireType 0 =*/128).bool(message.neutralZoneFeedingTeleop);
             return writer;
         };
 
@@ -276,20 +309,24 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                         message.scouter = reader.string();
                         break;
                     }
+                case 14: {
+                        message.preloadedGameElements = reader.uint32();
+                        break;
+                    }
                 case 5: {
-                        message.autonShotsAttempted = reader.uint32();
+                        message.autonShotsMissed = reader.uint32();
                         break;
                     }
                 case 6: {
-                        message.autonShotsMade = reader.uint32();
+                        message.autonShotsAttempted = reader.uint32();
                         break;
                     }
                 case 7: {
-                        message.teleopShotsAttempted = reader.uint32();
+                        message.teleopShotsMissed = reader.uint32();
                         break;
                     }
                 case 8: {
-                        message.teleopShotsMade = reader.uint32();
+                        message.teleopShotsAttempted = reader.uint32();
                         break;
                     }
                 case 9: {
@@ -306,6 +343,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                     }
                 case 13: {
                         message.canClimbLevel1Auton = reader.bool();
+                        break;
+                    }
+                case 15: {
+                        message.neutralZoneFeedingAuton = reader.bool();
+                        break;
+                    }
+                case 16: {
+                        message.neutralZoneFeedingTeleop = reader.bool();
                         break;
                     }
                 case 12: {
@@ -359,18 +404,21 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.scouter != null && message.hasOwnProperty("scouter"))
                 if (!$util.isString(message.scouter))
                     return "scouter: string expected";
+            if (message.preloadedGameElements != null && message.hasOwnProperty("preloadedGameElements"))
+                if (!$util.isInteger(message.preloadedGameElements))
+                    return "preloadedGameElements: integer expected";
+            if (message.autonShotsMissed != null && message.hasOwnProperty("autonShotsMissed"))
+                if (!$util.isInteger(message.autonShotsMissed))
+                    return "autonShotsMissed: integer expected";
             if (message.autonShotsAttempted != null && message.hasOwnProperty("autonShotsAttempted"))
                 if (!$util.isInteger(message.autonShotsAttempted))
                     return "autonShotsAttempted: integer expected";
-            if (message.autonShotsMade != null && message.hasOwnProperty("autonShotsMade"))
-                if (!$util.isInteger(message.autonShotsMade))
-                    return "autonShotsMade: integer expected";
+            if (message.teleopShotsMissed != null && message.hasOwnProperty("teleopShotsMissed"))
+                if (!$util.isInteger(message.teleopShotsMissed))
+                    return "teleopShotsMissed: integer expected";
             if (message.teleopShotsAttempted != null && message.hasOwnProperty("teleopShotsAttempted"))
                 if (!$util.isInteger(message.teleopShotsAttempted))
                     return "teleopShotsAttempted: integer expected";
-            if (message.teleopShotsMade != null && message.hasOwnProperty("teleopShotsMade"))
-                if (!$util.isInteger(message.teleopShotsMade))
-                    return "teleopShotsMade: integer expected";
             if (message.climbLevel != null && message.hasOwnProperty("climbLevel"))
                 switch (message.climbLevel) {
                 default:
@@ -390,6 +438,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.canClimbLevel1Auton != null && message.hasOwnProperty("canClimbLevel1Auton"))
                 if (typeof message.canClimbLevel1Auton !== "boolean")
                     return "canClimbLevel1Auton: boolean expected";
+            if (message.neutralZoneFeedingAuton != null && message.hasOwnProperty("neutralZoneFeedingAuton"))
+                if (typeof message.neutralZoneFeedingAuton !== "boolean")
+                    return "neutralZoneFeedingAuton: boolean expected";
+            if (message.neutralZoneFeedingTeleop != null && message.hasOwnProperty("neutralZoneFeedingTeleop"))
+                if (typeof message.neutralZoneFeedingTeleop !== "boolean")
+                    return "neutralZoneFeedingTeleop: boolean expected";
             if (message.notes != null && message.hasOwnProperty("notes"))
                 if (!$util.isString(message.notes))
                     return "notes: string expected";
@@ -416,14 +470,16 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.match = String(object.match);
             if (object.scouter != null)
                 message.scouter = String(object.scouter);
+            if (object.preloadedGameElements != null)
+                message.preloadedGameElements = object.preloadedGameElements >>> 0;
+            if (object.autonShotsMissed != null)
+                message.autonShotsMissed = object.autonShotsMissed >>> 0;
             if (object.autonShotsAttempted != null)
                 message.autonShotsAttempted = object.autonShotsAttempted >>> 0;
-            if (object.autonShotsMade != null)
-                message.autonShotsMade = object.autonShotsMade >>> 0;
+            if (object.teleopShotsMissed != null)
+                message.teleopShotsMissed = object.teleopShotsMissed >>> 0;
             if (object.teleopShotsAttempted != null)
                 message.teleopShotsAttempted = object.teleopShotsAttempted >>> 0;
-            if (object.teleopShotsMade != null)
-                message.teleopShotsMade = object.teleopShotsMade >>> 0;
             switch (object.climbLevel) {
             default:
                 if (typeof object.climbLevel === "number") {
@@ -454,6 +510,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.canGoUnderTrench = Boolean(object.canGoUnderTrench);
             if (object.canClimbLevel1Auton != null)
                 message.canClimbLevel1Auton = Boolean(object.canClimbLevel1Auton);
+            if (object.neutralZoneFeedingAuton != null)
+                message.neutralZoneFeedingAuton = Boolean(object.neutralZoneFeedingAuton);
+            if (object.neutralZoneFeedingTeleop != null)
+                message.neutralZoneFeedingTeleop = Boolean(object.neutralZoneFeedingTeleop);
             if (object.notes != null)
                 message.notes = String(object.notes);
             return message;
@@ -477,15 +537,18 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.team = "";
                 object.match = "";
                 object.scouter = "";
+                object.autonShotsMissed = 0;
                 object.autonShotsAttempted = 0;
-                object.autonShotsMade = 0;
+                object.teleopShotsMissed = 0;
                 object.teleopShotsAttempted = 0;
-                object.teleopShotsMade = 0;
                 object.climbLevel = options.enums === String ? "CLIMB_NONE" : 0;
                 object.canGoOverBump = false;
                 object.canGoUnderTrench = false;
                 object.notes = "";
                 object.canClimbLevel1Auton = false;
+                object.preloadedGameElements = 0;
+                object.neutralZoneFeedingAuton = false;
+                object.neutralZoneFeedingTeleop = false;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -495,14 +558,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.match = message.match;
             if (message.scouter != null && message.hasOwnProperty("scouter"))
                 object.scouter = message.scouter;
+            if (message.autonShotsMissed != null && message.hasOwnProperty("autonShotsMissed"))
+                object.autonShotsMissed = message.autonShotsMissed;
             if (message.autonShotsAttempted != null && message.hasOwnProperty("autonShotsAttempted"))
                 object.autonShotsAttempted = message.autonShotsAttempted;
-            if (message.autonShotsMade != null && message.hasOwnProperty("autonShotsMade"))
-                object.autonShotsMade = message.autonShotsMade;
+            if (message.teleopShotsMissed != null && message.hasOwnProperty("teleopShotsMissed"))
+                object.teleopShotsMissed = message.teleopShotsMissed;
             if (message.teleopShotsAttempted != null && message.hasOwnProperty("teleopShotsAttempted"))
                 object.teleopShotsAttempted = message.teleopShotsAttempted;
-            if (message.teleopShotsMade != null && message.hasOwnProperty("teleopShotsMade"))
-                object.teleopShotsMade = message.teleopShotsMade;
             if (message.climbLevel != null && message.hasOwnProperty("climbLevel"))
                 object.climbLevel = options.enums === String ? $root.troyargonautsprotobuf.ClimbLevel[message.climbLevel] === undefined ? message.climbLevel : $root.troyargonautsprotobuf.ClimbLevel[message.climbLevel] : message.climbLevel;
             if (message.canGoOverBump != null && message.hasOwnProperty("canGoOverBump"))
@@ -513,6 +576,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.notes = message.notes;
             if (message.canClimbLevel1Auton != null && message.hasOwnProperty("canClimbLevel1Auton"))
                 object.canClimbLevel1Auton = message.canClimbLevel1Auton;
+            if (message.preloadedGameElements != null && message.hasOwnProperty("preloadedGameElements"))
+                object.preloadedGameElements = message.preloadedGameElements;
+            if (message.neutralZoneFeedingAuton != null && message.hasOwnProperty("neutralZoneFeedingAuton"))
+                object.neutralZoneFeedingAuton = message.neutralZoneFeedingAuton;
+            if (message.neutralZoneFeedingTeleop != null && message.hasOwnProperty("neutralZoneFeedingTeleop"))
+                object.neutralZoneFeedingTeleop = message.neutralZoneFeedingTeleop;
             return object;
         };
 

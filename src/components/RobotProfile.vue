@@ -70,25 +70,27 @@ const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> =
   team: 'Team',
   match: 'Match',
   scouter: 'Scouter',
+  autonShotsMissed: 'Auton Missed',
   autonShotsAttempted: 'Auton Attempted',
-  autonShotsMade: 'Auton Made',
+  teleopShotsMissed: 'Teleop Missed',
   teleopShotsAttempted: 'Teleop Attempted',
-  teleopShotsMade: 'Teleop Made',
   climbLevel: 'Climb',
   canGoOverBump: 'Over Bump',
   canGoUnderTrench: 'Under Trench',
   canClimbLevel1Auton: 'Auton L1 Climb',
+  neutralZoneFeedingAuton: 'Auton NZ Feed',
+  neutralZoneFeedingTeleop: 'Teleop NZ Feed',
   notes: 'Notes',
   delete: 'Delete',
 };
 
 const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   team: 'Team',
+  avgAutonShotsMissed: 'Avg Auton Missed',
   avgAutonShotsAttempted: 'Avg Auton Attempted',
-  avgAutonShotsMade: 'Avg Auton Made',
   avgAutonAccuracy: 'Avg Auton Accuracy %',
+  avgTeleopShotsMissed: 'Avg Teleop Missed',
   avgTeleopShotsAttempted: 'Avg Teleop Attempted',
-  avgTeleopShotsMade: 'Avg Teleop Made',
   avgTeleopAccuracy: 'Avg Teleop Accuracy %',
   avgTotalMainScore: 'Avg Total Made',
   canClimbLevel1: 'Can Climb L1',
@@ -97,6 +99,8 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   canGoOverBump: 'Can Over Bump',
   canGoUnderTrench: 'Can Under Trench',
   canClimbLevel1Auton: 'Can Auton L1 Climb',
+  neutralZoneFeedingAuton: 'Auton NZ Feed',
+  neutralZoneFeedingTeleop: 'Teleop NZ Feed',
 };
 
 type InnerColumnKey = keyof MatchRecord | 'delete';
