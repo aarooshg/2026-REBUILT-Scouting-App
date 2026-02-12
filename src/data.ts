@@ -7,6 +7,7 @@ export type MatchRecord = {
   scouter: string;
 
   preloadedGameElements: number;
+  robotMovedInAuton?: boolean;
 
   autonShotsMissed: number;
   autonShotsAttempted: number;
@@ -20,6 +21,12 @@ export type MatchRecord = {
   canClimbLevel1Auton: boolean;
   neutralZoneFeedingAuton: boolean;
   neutralZoneFeedingTeleop: boolean;
+
+  teleopPhases?: Array<{
+    phase?: number;
+    activity?: number;
+    pickupLocation?: number;
+  }>;
 
   notes: string;
 };
@@ -88,6 +95,16 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
     if (record.canClimbLevel1Auton) canClimbLevel1Auton = true;
     if (record.neutralZoneFeedingAuton) neutralZoneFeedingAuton = true;
     if (record.neutralZoneFeedingTeleop) neutralZoneFeedingTeleop = true;
+
+    // Check teleop phases for feeding activity (activity value 3 = FED)
+    if (record.teleopPhases && record.teleopPhases.length > 0) {
+      for (const phase of record.teleopPhases) {
+        if (phase.activity === 3) {  // PhaseActivity.FED = 3
+          neutralZoneFeedingTeleop = true;
+          break;
+        }
+      }
+    }
   }
 
   const avgAutonShotsMissed = records.length ? sums.autonShotsMissed / records.length : 0;

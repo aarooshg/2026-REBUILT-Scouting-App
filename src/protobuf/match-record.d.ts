@@ -11,6 +11,141 @@ export namespace troyargonautsprotobuf {
         LEVEL_3 = 3
     }
 
+    /** TeleopPhase enum. */
+    enum TeleopPhase {
+        TRANSITION_SHIFT = 0,
+        SHIFT_1 = 1,
+        SHIFT_2 = 2,
+        SHIFT_3 = 3,
+        SHIFT_4 = 4,
+        END_GAME = 5
+    }
+
+    /** PhaseActivity enum. */
+    enum PhaseActivity {
+        SCORED = 0,
+        PICKUP = 1,
+        DEFENSE = 2,
+        FED = 3
+    }
+
+    /** PickupLocation enum. */
+    enum PickupLocation {
+        ALLIANCE_ZONE = 0,
+        OUTPOST = 1,
+        NEUTRAL_ZONE = 2,
+        OPPONENT_AREA = 3
+    }
+
+    /** Properties of a TeleopPhaseRecord. */
+    interface ITeleopPhaseRecord {
+
+        /** TeleopPhaseRecord phase */
+        phase?: (troyargonautsprotobuf.TeleopPhase|null);
+
+        /** TeleopPhaseRecord activity */
+        activity?: (troyargonautsprotobuf.PhaseActivity|null);
+
+        /** TeleopPhaseRecord pickupLocation */
+        pickupLocation?: (troyargonautsprotobuf.PickupLocation|null);
+    }
+
+    /** Represents a TeleopPhaseRecord. */
+    class TeleopPhaseRecord implements ITeleopPhaseRecord {
+
+        /**
+         * Constructs a new TeleopPhaseRecord.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: troyargonautsprotobuf.ITeleopPhaseRecord);
+
+        /** TeleopPhaseRecord phase. */
+        public phase: troyargonautsprotobuf.TeleopPhase;
+
+        /** TeleopPhaseRecord activity. */
+        public activity: troyargonautsprotobuf.PhaseActivity;
+
+        /** TeleopPhaseRecord pickupLocation. */
+        public pickupLocation: troyargonautsprotobuf.PickupLocation;
+
+        /**
+         * Creates a new TeleopPhaseRecord instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns TeleopPhaseRecord instance
+         */
+        public static create(properties?: troyargonautsprotobuf.ITeleopPhaseRecord): troyargonautsprotobuf.TeleopPhaseRecord;
+
+        /**
+         * Encodes the specified TeleopPhaseRecord message. Does not implicitly {@link troyargonautsprotobuf.TeleopPhaseRecord.verify|verify} messages.
+         * @param message TeleopPhaseRecord message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: troyargonautsprotobuf.ITeleopPhaseRecord, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified TeleopPhaseRecord message, length delimited. Does not implicitly {@link troyargonautsprotobuf.TeleopPhaseRecord.verify|verify} messages.
+         * @param message TeleopPhaseRecord message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: troyargonautsprotobuf.ITeleopPhaseRecord, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a TeleopPhaseRecord message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns TeleopPhaseRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): troyargonautsprotobuf.TeleopPhaseRecord;
+
+        /**
+         * Decodes a TeleopPhaseRecord message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns TeleopPhaseRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): troyargonautsprotobuf.TeleopPhaseRecord;
+
+        /**
+         * Verifies a TeleopPhaseRecord message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a TeleopPhaseRecord message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns TeleopPhaseRecord
+         */
+        public static fromObject(object: { [k: string]: any }): troyargonautsprotobuf.TeleopPhaseRecord;
+
+        /**
+         * Creates a plain object from a TeleopPhaseRecord message. Also converts values to other types if specified.
+         * @param message TeleopPhaseRecord
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: troyargonautsprotobuf.TeleopPhaseRecord, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this TeleopPhaseRecord to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+
+        /**
+         * Gets the default type url for TeleopPhaseRecord
+         * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns The default type url
+         */
+        public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
     /** Properties of a MatchRecord. */
     interface IMatchRecord {
 
@@ -26,8 +161,20 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter */
         scouter?: (string|null);
 
+        /** MatchRecord alliance */
+        alliance?: (troyargonautsprotobuf.MatchRecord.Alliance|null);
+
+        /** MatchRecord startingPosition */
+        startingPosition?: (troyargonautsprotobuf.MatchRecord.StartingPosition|null);
+
+        /** MatchRecord teleopPhases */
+        teleopPhases?: (troyargonautsprotobuf.ITeleopPhaseRecord[]|null);
+
         /** MatchRecord preloadedGameElements */
         preloadedGameElements?: (number|null);
+
+        /** MatchRecord robotMovedInAuton */
+        robotMovedInAuton?: (boolean|null);
 
         /** MatchRecord autonShotsMissed */
         autonShotsMissed?: (number|null);
@@ -84,8 +231,20 @@ export namespace troyargonautsprotobuf {
         /** MatchRecord scouter. */
         public scouter: string;
 
+        /** MatchRecord alliance. */
+        public alliance: troyargonautsprotobuf.MatchRecord.Alliance;
+
+        /** MatchRecord startingPosition. */
+        public startingPosition: troyargonautsprotobuf.MatchRecord.StartingPosition;
+
+        /** MatchRecord teleopPhases. */
+        public teleopPhases: troyargonautsprotobuf.ITeleopPhaseRecord[];
+
         /** MatchRecord preloadedGameElements. */
         public preloadedGameElements: number;
+
+        /** MatchRecord robotMovedInAuton. */
+        public robotMovedInAuton: boolean;
 
         /** MatchRecord autonShotsMissed. */
         public autonShotsMissed: number;
@@ -196,6 +355,28 @@ export namespace troyargonautsprotobuf {
          * @returns The default type url
          */
         public static getTypeUrl(typeUrlPrefix?: string): string;
+    }
+
+    namespace MatchRecord {
+
+        /** Alliance enum. */
+        enum Alliance {
+            R1 = 0,
+            R2 = 1,
+            R3 = 2,
+            B1 = 3,
+            B2 = 4,
+            B3 = 5
+        }
+
+        /** StartingPosition enum. */
+        enum StartingPosition {
+            P1 = 0,
+            P2 = 1,
+            P3 = 2,
+            P4 = 3,
+            P5 = 4
+        }
     }
 
     /** Properties of a MatchRecords. */

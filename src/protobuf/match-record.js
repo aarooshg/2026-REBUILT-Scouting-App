@@ -34,6 +34,413 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         return values;
     })();
 
+    /**
+     * TeleopPhase enum.
+     * @name troyargonautsprotobuf.TeleopPhase
+     * @enum {number}
+     * @property {number} TRANSITION_SHIFT=0 TRANSITION_SHIFT value
+     * @property {number} SHIFT_1=1 SHIFT_1 value
+     * @property {number} SHIFT_2=2 SHIFT_2 value
+     * @property {number} SHIFT_3=3 SHIFT_3 value
+     * @property {number} SHIFT_4=4 SHIFT_4 value
+     * @property {number} END_GAME=5 END_GAME value
+     */
+    troyargonautsprotobuf.TeleopPhase = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "TRANSITION_SHIFT"] = 0;
+        values[valuesById[1] = "SHIFT_1"] = 1;
+        values[valuesById[2] = "SHIFT_2"] = 2;
+        values[valuesById[3] = "SHIFT_3"] = 3;
+        values[valuesById[4] = "SHIFT_4"] = 4;
+        values[valuesById[5] = "END_GAME"] = 5;
+        return values;
+    })();
+
+    /**
+     * PhaseActivity enum.
+     * @name troyargonautsprotobuf.PhaseActivity
+     * @enum {number}
+     * @property {number} SCORED=0 SCORED value
+     * @property {number} PICKUP=1 PICKUP value
+     * @property {number} DEFENSE=2 DEFENSE value
+     * @property {number} FED=3 FED value
+     */
+    troyargonautsprotobuf.PhaseActivity = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "SCORED"] = 0;
+        values[valuesById[1] = "PICKUP"] = 1;
+        values[valuesById[2] = "DEFENSE"] = 2;
+        values[valuesById[3] = "FED"] = 3;
+        return values;
+    })();
+
+    /**
+     * PickupLocation enum.
+     * @name troyargonautsprotobuf.PickupLocation
+     * @enum {number}
+     * @property {number} ALLIANCE_ZONE=0 ALLIANCE_ZONE value
+     * @property {number} OUTPOST=1 OUTPOST value
+     * @property {number} NEUTRAL_ZONE=2 NEUTRAL_ZONE value
+     * @property {number} OPPONENT_AREA=3 OPPONENT_AREA value
+     */
+    troyargonautsprotobuf.PickupLocation = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "ALLIANCE_ZONE"] = 0;
+        values[valuesById[1] = "OUTPOST"] = 1;
+        values[valuesById[2] = "NEUTRAL_ZONE"] = 2;
+        values[valuesById[3] = "OPPONENT_AREA"] = 3;
+        return values;
+    })();
+
+    troyargonautsprotobuf.TeleopPhaseRecord = (function() {
+
+        /**
+         * Properties of a TeleopPhaseRecord.
+         * @memberof troyargonautsprotobuf
+         * @interface ITeleopPhaseRecord
+         * @property {troyargonautsprotobuf.TeleopPhase|null} [phase] TeleopPhaseRecord phase
+         * @property {troyargonautsprotobuf.PhaseActivity|null} [activity] TeleopPhaseRecord activity
+         * @property {troyargonautsprotobuf.PickupLocation|null} [pickupLocation] TeleopPhaseRecord pickupLocation
+         */
+
+        /**
+         * Constructs a new TeleopPhaseRecord.
+         * @memberof troyargonautsprotobuf
+         * @classdesc Represents a TeleopPhaseRecord.
+         * @implements ITeleopPhaseRecord
+         * @constructor
+         * @param {troyargonautsprotobuf.ITeleopPhaseRecord=} [properties] Properties to set
+         */
+        function TeleopPhaseRecord(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * TeleopPhaseRecord phase.
+         * @member {troyargonautsprotobuf.TeleopPhase} phase
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         */
+        TeleopPhaseRecord.prototype.phase = 0;
+
+        /**
+         * TeleopPhaseRecord activity.
+         * @member {troyargonautsprotobuf.PhaseActivity} activity
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         */
+        TeleopPhaseRecord.prototype.activity = 0;
+
+        /**
+         * TeleopPhaseRecord pickupLocation.
+         * @member {troyargonautsprotobuf.PickupLocation} pickupLocation
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         */
+        TeleopPhaseRecord.prototype.pickupLocation = 0;
+
+        /**
+         * Creates a new TeleopPhaseRecord instance using the specified properties.
+         * @function create
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {troyargonautsprotobuf.ITeleopPhaseRecord=} [properties] Properties to set
+         * @returns {troyargonautsprotobuf.TeleopPhaseRecord} TeleopPhaseRecord instance
+         */
+        TeleopPhaseRecord.create = function create(properties) {
+            return new TeleopPhaseRecord(properties);
+        };
+
+        /**
+         * Encodes the specified TeleopPhaseRecord message. Does not implicitly {@link troyargonautsprotobuf.TeleopPhaseRecord.verify|verify} messages.
+         * @function encode
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {troyargonautsprotobuf.ITeleopPhaseRecord} message TeleopPhaseRecord message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TeleopPhaseRecord.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.phase != null && Object.hasOwnProperty.call(message, "phase"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.phase);
+            if (message.activity != null && Object.hasOwnProperty.call(message, "activity"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.activity);
+            if (message.pickupLocation != null && Object.hasOwnProperty.call(message, "pickupLocation"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pickupLocation);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified TeleopPhaseRecord message, length delimited. Does not implicitly {@link troyargonautsprotobuf.TeleopPhaseRecord.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {troyargonautsprotobuf.ITeleopPhaseRecord} message TeleopPhaseRecord message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        TeleopPhaseRecord.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a TeleopPhaseRecord message from the specified reader or buffer.
+         * @function decode
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {troyargonautsprotobuf.TeleopPhaseRecord} TeleopPhaseRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TeleopPhaseRecord.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.troyargonautsprotobuf.TeleopPhaseRecord();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.phase = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.activity = reader.int32();
+                        break;
+                    }
+                case 3: {
+                        message.pickupLocation = reader.int32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a TeleopPhaseRecord message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {troyargonautsprotobuf.TeleopPhaseRecord} TeleopPhaseRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        TeleopPhaseRecord.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a TeleopPhaseRecord message.
+         * @function verify
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        TeleopPhaseRecord.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.phase != null && message.hasOwnProperty("phase"))
+                switch (message.phase) {
+                default:
+                    return "phase: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    break;
+                }
+            if (message.activity != null && message.hasOwnProperty("activity"))
+                switch (message.activity) {
+                default:
+                    return "activity: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                }
+            if (message.pickupLocation != null && message.hasOwnProperty("pickupLocation"))
+                switch (message.pickupLocation) {
+                default:
+                    return "pickupLocation: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                    break;
+                }
+            return null;
+        };
+
+        /**
+         * Creates a TeleopPhaseRecord message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {troyargonautsprotobuf.TeleopPhaseRecord} TeleopPhaseRecord
+         */
+        TeleopPhaseRecord.fromObject = function fromObject(object) {
+            if (object instanceof $root.troyargonautsprotobuf.TeleopPhaseRecord)
+                return object;
+            let message = new $root.troyargonautsprotobuf.TeleopPhaseRecord();
+            switch (object.phase) {
+            default:
+                if (typeof object.phase === "number") {
+                    message.phase = object.phase;
+                    break;
+                }
+                break;
+            case "TRANSITION_SHIFT":
+            case 0:
+                message.phase = 0;
+                break;
+            case "SHIFT_1":
+            case 1:
+                message.phase = 1;
+                break;
+            case "SHIFT_2":
+            case 2:
+                message.phase = 2;
+                break;
+            case "SHIFT_3":
+            case 3:
+                message.phase = 3;
+                break;
+            case "SHIFT_4":
+            case 4:
+                message.phase = 4;
+                break;
+            case "END_GAME":
+            case 5:
+                message.phase = 5;
+                break;
+            }
+            switch (object.activity) {
+            default:
+                if (typeof object.activity === "number") {
+                    message.activity = object.activity;
+                    break;
+                }
+                break;
+            case "SCORED":
+            case 0:
+                message.activity = 0;
+                break;
+            case "PICKUP":
+            case 1:
+                message.activity = 1;
+                break;
+            case "DEFENSE":
+            case 2:
+                message.activity = 2;
+                break;
+            case "FED":
+            case 3:
+                message.activity = 3;
+                break;
+            }
+            switch (object.pickupLocation) {
+            default:
+                if (typeof object.pickupLocation === "number") {
+                    message.pickupLocation = object.pickupLocation;
+                    break;
+                }
+                break;
+            case "ALLIANCE_ZONE":
+            case 0:
+                message.pickupLocation = 0;
+                break;
+            case "OUTPOST":
+            case 1:
+                message.pickupLocation = 1;
+                break;
+            case "NEUTRAL_ZONE":
+            case 2:
+                message.pickupLocation = 2;
+                break;
+            case "OPPONENT_AREA":
+            case 3:
+                message.pickupLocation = 3;
+                break;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a TeleopPhaseRecord message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {troyargonautsprotobuf.TeleopPhaseRecord} message TeleopPhaseRecord
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        TeleopPhaseRecord.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.phase = options.enums === String ? "TRANSITION_SHIFT" : 0;
+                object.activity = options.enums === String ? "SCORED" : 0;
+                object.pickupLocation = options.enums === String ? "ALLIANCE_ZONE" : 0;
+            }
+            if (message.phase != null && message.hasOwnProperty("phase"))
+                object.phase = options.enums === String ? $root.troyargonautsprotobuf.TeleopPhase[message.phase] === undefined ? message.phase : $root.troyargonautsprotobuf.TeleopPhase[message.phase] : message.phase;
+            if (message.activity != null && message.hasOwnProperty("activity"))
+                object.activity = options.enums === String ? $root.troyargonautsprotobuf.PhaseActivity[message.activity] === undefined ? message.activity : $root.troyargonautsprotobuf.PhaseActivity[message.activity] : message.activity;
+            if (message.pickupLocation != null && message.hasOwnProperty("pickupLocation"))
+                object.pickupLocation = options.enums === String ? $root.troyargonautsprotobuf.PickupLocation[message.pickupLocation] === undefined ? message.pickupLocation : $root.troyargonautsprotobuf.PickupLocation[message.pickupLocation] : message.pickupLocation;
+            return object;
+        };
+
+        /**
+         * Converts this TeleopPhaseRecord to JSON.
+         * @function toJSON
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        TeleopPhaseRecord.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for TeleopPhaseRecord
+         * @function getTypeUrl
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        TeleopPhaseRecord.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/troyargonautsprotobuf.TeleopPhaseRecord";
+        };
+
+        return TeleopPhaseRecord;
+    })();
+
     troyargonautsprotobuf.MatchRecord = (function() {
 
         /**
@@ -44,7 +451,11 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {string|null} [team] MatchRecord team
          * @property {string|null} [match] MatchRecord match
          * @property {string|null} [scouter] MatchRecord scouter
+         * @property {troyargonautsprotobuf.MatchRecord.Alliance|null} [alliance] MatchRecord alliance
+         * @property {troyargonautsprotobuf.MatchRecord.StartingPosition|null} [startingPosition] MatchRecord startingPosition
+         * @property {Array.<troyargonautsprotobuf.ITeleopPhaseRecord>|null} [teleopPhases] MatchRecord teleopPhases
          * @property {number|null} [preloadedGameElements] MatchRecord preloadedGameElements
+         * @property {boolean|null} [robotMovedInAuton] MatchRecord robotMovedInAuton
          * @property {number|null} [autonShotsMissed] MatchRecord autonShotsMissed
          * @property {number|null} [autonShotsAttempted] MatchRecord autonShotsAttempted
          * @property {number|null} [teleopShotsMissed] MatchRecord teleopShotsMissed
@@ -67,6 +478,7 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @param {troyargonautsprotobuf.IMatchRecord=} [properties] Properties to set
          */
         function MatchRecord(properties) {
+            this.teleopPhases = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -106,12 +518,44 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         MatchRecord.prototype.scouter = "";
 
         /**
+         * MatchRecord alliance.
+         * @member {troyargonautsprotobuf.MatchRecord.Alliance} alliance
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.alliance = 0;
+
+        /**
+         * MatchRecord startingPosition.
+         * @member {troyargonautsprotobuf.MatchRecord.StartingPosition} startingPosition
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.startingPosition = 0;
+
+        /**
+         * MatchRecord teleopPhases.
+         * @member {Array.<troyargonautsprotobuf.ITeleopPhaseRecord>} teleopPhases
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.teleopPhases = $util.emptyArray;
+
+        /**
          * MatchRecord preloadedGameElements.
          * @member {number} preloadedGameElements
          * @memberof troyargonautsprotobuf.MatchRecord
          * @instance
          */
         MatchRecord.prototype.preloadedGameElements = 0;
+
+        /**
+         * MatchRecord robotMovedInAuton.
+         * @member {boolean} robotMovedInAuton
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.robotMovedInAuton = false;
 
         /**
          * MatchRecord autonShotsMissed.
@@ -257,6 +701,15 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 writer.uint32(/* id 15, wireType 0 =*/120).bool(message.neutralZoneFeedingAuton);
             if (message.neutralZoneFeedingTeleop != null && Object.hasOwnProperty.call(message, "neutralZoneFeedingTeleop"))
                 writer.uint32(/* id 16, wireType 0 =*/128).bool(message.neutralZoneFeedingTeleop);
+            if (message.alliance != null && Object.hasOwnProperty.call(message, "alliance"))
+                writer.uint32(/* id 17, wireType 0 =*/136).int32(message.alliance);
+            if (message.startingPosition != null && Object.hasOwnProperty.call(message, "startingPosition"))
+                writer.uint32(/* id 18, wireType 0 =*/144).int32(message.startingPosition);
+            if (message.teleopPhases != null && message.teleopPhases.length)
+                for (let i = 0; i < message.teleopPhases.length; ++i)
+                    $root.troyargonautsprotobuf.TeleopPhaseRecord.encode(message.teleopPhases[i], writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
+            if (message.robotMovedInAuton != null && Object.hasOwnProperty.call(message, "robotMovedInAuton"))
+                writer.uint32(/* id 20, wireType 0 =*/160).bool(message.robotMovedInAuton);
             return writer;
         };
 
@@ -309,8 +762,26 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                         message.scouter = reader.string();
                         break;
                     }
+                case 17: {
+                        message.alliance = reader.int32();
+                        break;
+                    }
+                case 18: {
+                        message.startingPosition = reader.int32();
+                        break;
+                    }
+                case 19: {
+                        if (!(message.teleopPhases && message.teleopPhases.length))
+                            message.teleopPhases = [];
+                        message.teleopPhases.push($root.troyargonautsprotobuf.TeleopPhaseRecord.decode(reader, reader.uint32()));
+                        break;
+                    }
                 case 14: {
                         message.preloadedGameElements = reader.uint32();
+                        break;
+                    }
+                case 20: {
+                        message.robotMovedInAuton = reader.bool();
                         break;
                     }
                 case 5: {
@@ -404,9 +875,44 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.scouter != null && message.hasOwnProperty("scouter"))
                 if (!$util.isString(message.scouter))
                     return "scouter: string expected";
+            if (message.alliance != null && message.hasOwnProperty("alliance"))
+                switch (message.alliance) {
+                default:
+                    return "alliance: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                    break;
+                }
+            if (message.startingPosition != null && message.hasOwnProperty("startingPosition"))
+                switch (message.startingPosition) {
+                default:
+                    return "startingPosition: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            if (message.teleopPhases != null && message.hasOwnProperty("teleopPhases")) {
+                if (!Array.isArray(message.teleopPhases))
+                    return "teleopPhases: array expected";
+                for (let i = 0; i < message.teleopPhases.length; ++i) {
+                    let error = $root.troyargonautsprotobuf.TeleopPhaseRecord.verify(message.teleopPhases[i]);
+                    if (error)
+                        return "teleopPhases." + error;
+                }
+            }
             if (message.preloadedGameElements != null && message.hasOwnProperty("preloadedGameElements"))
                 if (!$util.isInteger(message.preloadedGameElements))
                     return "preloadedGameElements: integer expected";
+            if (message.robotMovedInAuton != null && message.hasOwnProperty("robotMovedInAuton"))
+                if (typeof message.robotMovedInAuton !== "boolean")
+                    return "robotMovedInAuton: boolean expected";
             if (message.autonShotsMissed != null && message.hasOwnProperty("autonShotsMissed"))
                 if (!$util.isInteger(message.autonShotsMissed))
                     return "autonShotsMissed: integer expected";
@@ -470,8 +976,80 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.match = String(object.match);
             if (object.scouter != null)
                 message.scouter = String(object.scouter);
+            switch (object.alliance) {
+            default:
+                if (typeof object.alliance === "number") {
+                    message.alliance = object.alliance;
+                    break;
+                }
+                break;
+            case "R1":
+            case 0:
+                message.alliance = 0;
+                break;
+            case "R2":
+            case 1:
+                message.alliance = 1;
+                break;
+            case "R3":
+            case 2:
+                message.alliance = 2;
+                break;
+            case "B1":
+            case 3:
+                message.alliance = 3;
+                break;
+            case "B2":
+            case 4:
+                message.alliance = 4;
+                break;
+            case "B3":
+            case 5:
+                message.alliance = 5;
+                break;
+            }
+            switch (object.startingPosition) {
+            default:
+                if (typeof object.startingPosition === "number") {
+                    message.startingPosition = object.startingPosition;
+                    break;
+                }
+                break;
+            case "P1":
+            case 0:
+                message.startingPosition = 0;
+                break;
+            case "P2":
+            case 1:
+                message.startingPosition = 1;
+                break;
+            case "P3":
+            case 2:
+                message.startingPosition = 2;
+                break;
+            case "P4":
+            case 3:
+                message.startingPosition = 3;
+                break;
+            case "P5":
+            case 4:
+                message.startingPosition = 4;
+                break;
+            }
+            if (object.teleopPhases) {
+                if (!Array.isArray(object.teleopPhases))
+                    throw TypeError(".troyargonautsprotobuf.MatchRecord.teleopPhases: array expected");
+                message.teleopPhases = [];
+                for (let i = 0; i < object.teleopPhases.length; ++i) {
+                    if (typeof object.teleopPhases[i] !== "object")
+                        throw TypeError(".troyargonautsprotobuf.MatchRecord.teleopPhases: object expected");
+                    message.teleopPhases[i] = $root.troyargonautsprotobuf.TeleopPhaseRecord.fromObject(object.teleopPhases[i]);
+                }
+            }
             if (object.preloadedGameElements != null)
                 message.preloadedGameElements = object.preloadedGameElements >>> 0;
+            if (object.robotMovedInAuton != null)
+                message.robotMovedInAuton = Boolean(object.robotMovedInAuton);
             if (object.autonShotsMissed != null)
                 message.autonShotsMissed = object.autonShotsMissed >>> 0;
             if (object.autonShotsAttempted != null)
@@ -532,6 +1110,8 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (!options)
                 options = {};
             let object = {};
+            if (options.arrays || options.defaults)
+                object.teleopPhases = [];
             if (options.defaults) {
                 object.id = "";
                 object.team = "";
@@ -549,6 +1129,9 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.preloadedGameElements = 0;
                 object.neutralZoneFeedingAuton = false;
                 object.neutralZoneFeedingTeleop = false;
+                object.alliance = options.enums === String ? "R1" : 0;
+                object.startingPosition = options.enums === String ? "P1" : 0;
+                object.robotMovedInAuton = false;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -582,6 +1165,17 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.neutralZoneFeedingAuton = message.neutralZoneFeedingAuton;
             if (message.neutralZoneFeedingTeleop != null && message.hasOwnProperty("neutralZoneFeedingTeleop"))
                 object.neutralZoneFeedingTeleop = message.neutralZoneFeedingTeleop;
+            if (message.alliance != null && message.hasOwnProperty("alliance"))
+                object.alliance = options.enums === String ? $root.troyargonautsprotobuf.MatchRecord.Alliance[message.alliance] === undefined ? message.alliance : $root.troyargonautsprotobuf.MatchRecord.Alliance[message.alliance] : message.alliance;
+            if (message.startingPosition != null && message.hasOwnProperty("startingPosition"))
+                object.startingPosition = options.enums === String ? $root.troyargonautsprotobuf.MatchRecord.StartingPosition[message.startingPosition] === undefined ? message.startingPosition : $root.troyargonautsprotobuf.MatchRecord.StartingPosition[message.startingPosition] : message.startingPosition;
+            if (message.teleopPhases && message.teleopPhases.length) {
+                object.teleopPhases = [];
+                for (let j = 0; j < message.teleopPhases.length; ++j)
+                    object.teleopPhases[j] = $root.troyargonautsprotobuf.TeleopPhaseRecord.toObject(message.teleopPhases[j], options);
+            }
+            if (message.robotMovedInAuton != null && message.hasOwnProperty("robotMovedInAuton"))
+                object.robotMovedInAuton = message.robotMovedInAuton;
             return object;
         };
 
@@ -610,6 +1204,48 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             }
             return typeUrlPrefix + "/troyargonautsprotobuf.MatchRecord";
         };
+
+        /**
+         * Alliance enum.
+         * @name troyargonautsprotobuf.MatchRecord.Alliance
+         * @enum {number}
+         * @property {number} R1=0 R1 value
+         * @property {number} R2=1 R2 value
+         * @property {number} R3=2 R3 value
+         * @property {number} B1=3 B1 value
+         * @property {number} B2=4 B2 value
+         * @property {number} B3=5 B3 value
+         */
+        MatchRecord.Alliance = (function() {
+            const valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "R1"] = 0;
+            values[valuesById[1] = "R2"] = 1;
+            values[valuesById[2] = "R3"] = 2;
+            values[valuesById[3] = "B1"] = 3;
+            values[valuesById[4] = "B2"] = 4;
+            values[valuesById[5] = "B3"] = 5;
+            return values;
+        })();
+
+        /**
+         * StartingPosition enum.
+         * @name troyargonautsprotobuf.MatchRecord.StartingPosition
+         * @enum {number}
+         * @property {number} P1=0 P1 value
+         * @property {number} P2=1 P2 value
+         * @property {number} P3=2 P3 value
+         * @property {number} P4=3 P4 value
+         * @property {number} P5=4 P5 value
+         */
+        MatchRecord.StartingPosition = (function() {
+            const valuesById = {}, values = Object.create(valuesById);
+            values[valuesById[0] = "P1"] = 0;
+            values[valuesById[1] = "P2"] = 1;
+            values[valuesById[2] = "P3"] = 2;
+            values[valuesById[3] = "P4"] = 3;
+            values[valuesById[4] = "P5"] = 4;
+            return values;
+        })();
 
         return MatchRecord;
     })();

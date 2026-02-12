@@ -15,6 +15,7 @@ export function initMatchRecord(): MatchRecord {
     scouter: '',
 
     preloadedGameElements: 0,
+    robotMovedInAuton: false,
 
     autonShotsMissed: 0,
     autonShotsAttempted: 0,
@@ -28,6 +29,15 @@ export function initMatchRecord(): MatchRecord {
     canClimbLevel1Auton: false,
     neutralZoneFeedingAuton: false,
     neutralZoneFeedingTeleop: false,
+
+    teleopPhases: [
+      { phase: 0, activity: undefined, pickupLocation: undefined },
+      { phase: 1, activity: undefined, pickupLocation: undefined },
+      { phase: 2, activity: undefined, pickupLocation: undefined },
+      { phase: 3, activity: undefined, pickupLocation: undefined },
+      { phase: 4, activity: undefined, pickupLocation: undefined },
+      { phase: 5, activity: undefined, pickupLocation: undefined },
+    ],
 
     notes: '',
   };

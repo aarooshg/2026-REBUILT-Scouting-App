@@ -9,16 +9,66 @@ enum ClimbLevel {
   LEVEL_3 = 3;
 }
 
+enum TeleopPhase {
+  TRANSITION_SHIFT = 0;
+  SHIFT_1 = 1;
+  SHIFT_2 = 2;
+  SHIFT_3 = 3;
+  SHIFT_4 = 4;
+  END_GAME = 5;
+}
+
+enum PhaseActivity {
+  SCORED = 0;
+  PICKUP = 1;
+  DEFENSE = 2;
+  FED = 3;
+}
+
+enum PickupLocation {
+  ALLIANCE_ZONE = 0;
+  OUTPOST = 1;
+  NEUTRAL_ZONE = 2;
+  OPPONENT_AREA = 3;
+}
+
+message TeleopPhaseRecord {
+  TeleopPhase phase = 1;
+  PhaseActivity activity = 2;
+  PickupLocation pickupLocation = 3;  // Only used when activity is PICKUP
+}
+
 message MatchRecord {
+  enum Alliance {
+    R1 = 0;
+    R2 = 1;
+    R3 = 2;
+    B1 = 3;
+    B2 = 4;
+    B3 = 5;
+  }
+
+  enum StartingPosition {
+    P1 = 0;
+    P2 = 1;
+    P3 = 2;
+    P4 = 3;
+    P5 = 4;
+  }
+
   string id = 1;
 
   // identifiers
   string team = 2;
   string match = 3;
   string scouter = 4;
+  Alliance alliance = 17;
+  StartingPosition startingPosition = 18;
+  repeated TeleopPhaseRecord teleopPhases = 19;
 
   // prematch
   uint32 preloadedGameElements = 14;
+  bool robotMovedInAuton = 20;
 
   // scoring (main area)
   uint32 autonShotsMissed = 5;

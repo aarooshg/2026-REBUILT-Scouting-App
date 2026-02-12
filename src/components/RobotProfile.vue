@@ -66,6 +66,38 @@ function climbLabel(level: number) {
   }
 }
 
+function activityLabel(activity: number | undefined) {
+  if (activity === undefined) return '-';
+  switch (activity) {
+    case 0: return 'Scored';
+    case 1: return 'Pickup';
+    case 2: return 'Defense';
+    case 3: return 'Fed';
+    default: return '-';
+  }
+}
+
+function pickupLocationLabel(location: number | undefined) {
+  if (location === undefined) return '-';
+  switch (location) {
+    case 0: return 'Alliance Zone';
+    case 1: return 'Outpost';
+    case 2: return 'Neutral Zone';
+    case 3: return 'Opponent Area';
+    default: return '-';
+  }
+}
+
+function getPhaseActivity(item: MatchRecord, phaseIndex: number): string {
+  if (!item.teleopPhases || !item.teleopPhases[phaseIndex]) return '-';
+  const phase = item.teleopPhases[phaseIndex];
+  const activity = activityLabel(phase.activity);
+  if (phase.activity === 1 && phase.pickupLocation !== undefined) {
+    return `${activity} (${pickupLocationLabel(phase.pickupLocation)})`;
+  }
+  return activity;
+}
+
 const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> = {
   team: 'Team',
   match: 'Match',
@@ -103,13 +135,25 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   neutralZoneFeedingTeleop: 'Teleop NZ Feed',
 };
 
-type InnerColumnKey = keyof MatchRecord | 'delete';
+type InnerColumnKey = keyof MatchRecord | 'delete' | 'phase0' | 'phase1' | 'phase2' | 'phase3' | 'phase4' | 'phase5';
 
-const innerHeaders = Object.entries(innerHeaderTitles).map(([key, title]) => ({
-  value: key as InnerColumnKey,
-  title,
-  sortable: key !== 'delete',
-}));
+const innerHeaders = [
+  ...Object.entries(innerHeaderTitles)
+    .filter(([key]) => key !== 'delete')
+    .map(([key, title]) => ({
+      value: key as InnerColumnKey,
+      title,
+      sortable: true,
+    })),
+  { value: 'phase0' as InnerColumnKey, title: 'Transition Shift', sortable: false },
+  { value: 'phase1' as InnerColumnKey, title: 'Shift 1', sortable: false },
+  { value: 'phase2' as InnerColumnKey, title: 'Shift 2', sortable: false },
+  { value: 'phase3' as InnerColumnKey, title: 'Shift 3', sortable: false },
+  { value: 'phase4' as InnerColumnKey, title: 'Shift 4', sortable: false },
+  { value: 'phase5' as InnerColumnKey, title: 'End Game', sortable: false },
+  { value: 'delete' as InnerColumnKey, title: 'Delete', sortable: false },
+];
+
 
 const innerHeadersNonDelete = computed(() => innerHeaders.filter((h) => h.value !== 'delete'));
 
@@ -256,8 +300,14 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
               :key="header.value"
               v-slot:[`item.${header.value}`]="{ item }"
             >
-              <td @dblclick="header.value !== 'delete' ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
+              <td @dblclick="header.value !== 'delete' && !header.value.startsWith('phase') ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
                 <span v-if="header.value === 'climbLevel'">{{ climbLabel(item.climbLevel) }}</span>
+                <span v-else-if="header.value === 'phase0'">{{ getPhaseActivity(item, 0) }}</span>
+                <span v-else-if="header.value === 'phase1'">{{ getPhaseActivity(item, 1) }}</span>
+                <span v-else-if="header.value === 'phase2'">{{ getPhaseActivity(item, 2) }}</span>
+                <span v-else-if="header.value === 'phase3'">{{ getPhaseActivity(item, 3) }}</span>
+                <span v-else-if="header.value === 'phase4'">{{ getPhaseActivity(item, 4) }}</span>
+                <span v-else-if="header.value === 'phase5'">{{ getPhaseActivity(item, 5) }}</span>
                 <span v-else-if="header.value !== 'delete'">{{ item[header.value as keyof MatchRecord] }}</span>
               </td>
             </template>

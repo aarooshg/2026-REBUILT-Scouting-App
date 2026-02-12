@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { matchRecord } from './MatchRecords';
 
 const teleopShotsMissed = computed({
@@ -41,6 +41,53 @@ function incAttempted() {
 function decAttempted() {
   teleopShotsAttempted.value = Math.max(0, teleopShotsAttempted.value - 1);
 }
+
+// Phase tracking
+const phases = [
+  { value: 0, text: 'Transition Shift' },
+  { value: 1, text: 'Shift 1' },
+  { value: 2, text: 'Shift 2' },
+  { value: 3, text: 'Shift 3' },
+  { value: 4, text: 'Shift 4' },
+  { value: 5, text: 'End Game' },
+];
+
+const activities = [
+  { value: 0, text: 'Scored' },
+  { value: 1, text: 'Pickup' },
+  { value: 2, text: 'Defense' },
+  { value: 3, text: 'Fed' },
+];
+
+const pickupLocations = [
+  { value: 0, text: 'Alliance Zone' },
+  { value: 1, text: 'Outpost' },
+  { value: 2, text: 'Neutral Zone' },
+  { value: 3, text: 'Opponent Area' },
+];
+
+// Initialize teleopPhases array if it doesn't exist
+if (!matchRecord.value.teleopPhases) {
+  matchRecord.value.teleopPhases = [];
+}
+
+// Ensure we have records for all 6 phases
+watch(() => matchRecord.value.teleopPhases, () => {
+  if (!matchRecord.value.teleopPhases) {
+    matchRecord.value.teleopPhases = [];
+  }
+  // Initialize missing phases
+  for (let i = 0; i < 6; i++) {
+    if (!matchRecord.value.teleopPhases[i]) {
+      matchRecord.value.teleopPhases[i] = {
+        phase: i,
+        activity: undefined,
+        pickupLocation: undefined,
+      };
+    }
+  }
+}, { immediate: true, deep: true });
+
 </script>
 
 <template>
@@ -95,13 +142,38 @@ function decAttempted() {
 
       <v-divider class="my-4"></v-divider>
 
-      <div>
-        <v-checkbox
-          v-model="matchRecord.neutralZoneFeedingTeleop"
-          label="Neutral Zone Feeding"
-          color="primary"
-          hide-details
-        ></v-checkbox>
+      <!-- Phase Activity Tracking -->
+      <div class="text-subtitle-1 font-weight-bold mb-4">Phase Activity Tracking</div>
+      
+      <div v-for="(phase, index) in phases" :key="phase.value" class="mb-4">
+        <div class="text-body-2 font-weight-medium mb-2">{{ phase.text }}</div>
+        
+        <v-select
+          v-model="matchRecord.teleopPhases![index].activity"
+          :items="activities"
+          item-title="text"
+          item-value="value"
+          label="Activity"
+          variant="outlined"
+          density="compact"
+          hide-details="auto"
+          clearable
+        ></v-select>
+
+        <!-- Conditional Pickup Location -->
+        <v-select
+          v-if="matchRecord.teleopPhases![index].activity === 1"
+          v-model="matchRecord.teleopPhases![index].pickupLocation"
+          :items="pickupLocations"
+          item-title="text"
+          item-value="value"
+          label="Pickup Location"
+          variant="outlined"
+          density="compact"
+          hide-details="auto"
+          class="mt-2"
+          clearable
+        ></v-select>
       </div>
     </v-card-text>
   </v-card>
