@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { matchRecord } from './MatchRecords';
 
 const autonShotsMissed = computed({
@@ -40,6 +40,62 @@ function incAttempted() {
 
 function decAttempted() {
   autonShotsAttempted.value = Math.max(0, autonShotsAttempted.value - 1);
+}
+
+// Pickup tracking
+const pickupLocations = [
+  { value: 0, text: 'Depot' },
+  { value: 1, text: 'Outpost' },
+  { value: 2, text: 'Neutral Zone' },
+];
+
+const pickupOutcomes = [
+  { value: 0, text: 'Failed' },
+  { value: 1, text: 'Attempted' },
+  { value: 2, text: 'Successful' },
+];
+
+const selectedLocation = ref<number | undefined>(undefined);
+const selectedOutcome = ref<number | undefined>(undefined);
+
+// Initialize autonPickups if it doesn't exist
+if (!matchRecord.value.autonPickups) {
+  matchRecord.value.autonPickups = [];
+}
+
+function addPickup() {
+  if (selectedLocation.value === undefined || selectedOutcome.value === undefined) {
+    return;
+  }
+  
+  if (!matchRecord.value.autonPickups) {
+    matchRecord.value.autonPickups = [];
+  }
+  
+  matchRecord.value.autonPickups.push({
+    location: selectedLocation.value,
+    outcome: selectedOutcome.value,
+  });
+  
+  // Reset selections
+  selectedLocation.value = undefined;
+  selectedOutcome.value = undefined;
+}
+
+function deletePickup(index: number) {
+  if (matchRecord.value.autonPickups) {
+    matchRecord.value.autonPickups.splice(index, 1);
+  }
+}
+
+function getLocationText(location: number | undefined): string {
+  if (location === undefined) return '';
+  return pickupLocations.find(l => l.value === location)?.text || '';
+}
+
+function getOutcomeText(outcome: number | undefined): string {
+  if (outcome === undefined) return '';
+  return pickupOutcomes.find(o => o.value === outcome)?.text || '';
 }
 </script>
 
@@ -95,6 +151,64 @@ function decAttempted() {
 
       <v-divider class="my-4"></v-divider>
 
+      <!-- Pickup Tracking -->
+      <div class="text-subtitle-1 font-weight-bold mb-4">Pickup Tracking</div>
+      
+      <v-select
+        v-model="selectedLocation"
+        :items="pickupLocations"
+        item-title="text"
+        item-value="value"
+        label="Pickup Location"
+        variant="outlined"
+        density="compact"
+        hide-details="auto"
+        clearable
+        class="mb-2"
+      ></v-select>
+
+      <v-select
+        v-model="selectedOutcome"
+        :items="pickupOutcomes"
+        item-title="text"
+        item-value="value"
+        label="Outcome"
+        variant="outlined"
+        density="compact"
+        hide-details="auto"
+        clearable
+        class="mb-2"
+      ></v-select>
+
+      <v-btn
+        color="primary"
+        @click="addPickup"
+        :disabled="selectedLocation === undefined || selectedOutcome === undefined"
+        block
+        class="mb-4"
+      >
+        <v-icon left>mdi-plus</v-icon>
+        Add Pickup
+      </v-btn>
+
+      <!-- List of pickups -->
+      <div v-if="matchRecord.autonPickups && matchRecord.autonPickups.length > 0" class="mb-4">
+        <div class="text-body-2 font-weight-medium mb-2">Recorded Pickups:</div>
+        <v-chip
+          v-for="(pickup, index) in matchRecord.autonPickups"
+          :key="index"
+          closable
+          @click:close="deletePickup(index)"
+          class="ma-1"
+          color="primary"
+          variant="outlined"
+        >
+          {{ getLocationText(pickup.location) }} - {{ getOutcomeText(pickup.outcome) }}
+        </v-chip>
+      </div>
+
+      <v-divider class="my-4"></v-divider>
+
       <div>
         <v-checkbox
           v-model="matchRecord.canClimbLevel1Auton"
@@ -108,6 +222,13 @@ function decAttempted() {
           label="Neutral Zone Feeding"
           color="primary"
           hide-details
+        ></v-checkbox>
+        <v-checkbox
+          v-model="matchRecord.robotMovedInAuton"
+          label="Robot Moved in Auton"
+          color="primary"
+          hide-details
+          class="mt-2"
         ></v-checkbox>
       </div>
     </v-card-text>

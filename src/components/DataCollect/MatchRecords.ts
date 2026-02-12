@@ -16,6 +16,7 @@ export function initMatchRecord(): MatchRecord {
 
     preloadedGameElements: 0,
     robotMovedInAuton: false,
+    autonPickups: [],
 
     autonShotsMissed: 0,
     autonShotsAttempted: 0,
@@ -40,6 +41,7 @@ export function initMatchRecord(): MatchRecord {
     ],
 
     notes: '',
+    preferredPath: 0,
   };
 }
 

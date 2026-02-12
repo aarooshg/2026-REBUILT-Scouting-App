@@ -38,6 +38,29 @@ message TeleopPhaseRecord {
   PickupLocation pickupLocation = 3;  // Only used when activity is PICKUP
 }
 
+enum AutonPickupLocation {
+  DEPOT = 0;
+  OUTPOST = 1;
+  NEUTRAL_ZONE = 2;
+}
+
+enum AutonPickupOutcome {
+  FAILED = 0;
+  ATTEMPTED = 1;
+  SUCCESSFUL = 2;
+}
+
+message AutonPickupRecord {
+  AutonPickupLocation location = 1;
+  AutonPickupOutcome outcome = 2;
+}
+
+enum PreferredPath {
+  NONE = 0;
+  BUMP = 1;
+  TRENCH = 2;
+}
+
 message MatchRecord {
   enum Alliance {
     R1 = 0;
@@ -69,6 +92,7 @@ message MatchRecord {
   // prematch
   uint32 preloadedGameElements = 14;
   bool robotMovedInAuton = 20;
+  repeated AutonPickupRecord autonPickups = 21;
 
   // scoring (main area)
   uint32 autonShotsMissed = 5;
@@ -88,6 +112,7 @@ message MatchRecord {
 
   // misc
   string notes = 12;
+  PreferredPath preferredPath = 22;
 }
 
 message MatchRecords {

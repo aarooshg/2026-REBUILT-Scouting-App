@@ -98,6 +98,34 @@ function getPhaseActivity(item: MatchRecord, phaseIndex: number): string {
   return activity;
 }
 
+function autonPickupLocationLabel(location: number | undefined): string {
+  if (location === undefined) return '';
+  switch (location) {
+    case 0: return 'Depot';
+    case 1: return 'Outpost';
+    case 2: return 'Neutral Zone';
+    default: return '';
+  }
+}
+
+function autonPickupOutcomeLabel(outcome: number | undefined): string {
+  if (outcome === undefined) return '';
+  switch (outcome) {
+    case 0: return 'F';  // Failed
+    case 1: return 'A';  // Attempted
+    case 2: return 'S';  // Successful
+    default: return '';
+  }
+}
+
+function getAutonPickups(item: MatchRecord): string {
+  if (!item.autonPickups || item.autonPickups.length === 0) return '-';
+  
+  return item.autonPickups
+    .map(p => `${autonPickupLocationLabel(p.location)}: ${autonPickupOutcomeLabel(p.outcome)}`)
+    .join(', ');
+}
+
 const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> = {
   team: 'Team',
   match: 'Match',
@@ -133,9 +161,11 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   canClimbLevel1Auton: 'Can Auton L1 Climb',
   neutralZoneFeedingAuton: 'Auton NZ Feed',
   neutralZoneFeedingTeleop: 'Teleop NZ Feed',
+  preferredPickupLocation: 'Preferred Pickup',
+  mostCommonStartingPosition: 'Common Start Pos',
 };
 
-type InnerColumnKey = keyof MatchRecord | 'delete' | 'phase0' | 'phase1' | 'phase2' | 'phase3' | 'phase4' | 'phase5';
+type InnerColumnKey = keyof MatchRecord | 'delete' | 'phase0' | 'phase1' | 'phase2' | 'phase3' | 'phase4' | 'phase5' | 'autonPickups';
 
 const innerHeaders = [
   ...Object.entries(innerHeaderTitles)
@@ -145,6 +175,7 @@ const innerHeaders = [
       title,
       sortable: true,
     })),
+  { value: 'autonPickups' as InnerColumnKey, title: 'Auton Pickups', sortable: false },
   { value: 'phase0' as InnerColumnKey, title: 'Transition Shift', sortable: false },
   { value: 'phase1' as InnerColumnKey, title: 'Shift 1', sortable: false },
   { value: 'phase2' as InnerColumnKey, title: 'Shift 2', sortable: false },
@@ -300,8 +331,9 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
               :key="header.value"
               v-slot:[`item.${header.value}`]="{ item }"
             >
-              <td @dblclick="header.value !== 'delete' && !header.value.startsWith('phase') ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
+              <td @dblclick="header.value !== 'delete' && !header.value.startsWith('phase') && header.value !== 'autonPickups' ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
                 <span v-if="header.value === 'climbLevel'">{{ climbLabel(item.climbLevel) }}</span>
+                <span v-else-if="header.value === 'autonPickups'">{{ getAutonPickups(item) }}</span>
                 <span v-else-if="header.value === 'phase0'">{{ getPhaseActivity(item, 0) }}</span>
                 <span v-else-if="header.value === 'phase1'">{{ getPhaseActivity(item, 1) }}</span>
                 <span v-else-if="header.value === 'phase2'">{{ getPhaseActivity(item, 2) }}</span>

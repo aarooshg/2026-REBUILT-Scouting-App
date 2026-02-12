@@ -5,9 +5,15 @@ export type MatchRecord = {
   team: string;
   match: string;
   scouter: string;
+  alliance?: number;
+  startingPosition?: number;
 
   preloadedGameElements: number;
   robotMovedInAuton?: boolean;
+  autonPickups?: Array<{
+    location?: number;
+    outcome?: number;
+  }>;
 
   autonShotsMissed: number;
   autonShotsAttempted: number;
@@ -29,6 +35,7 @@ export type MatchRecord = {
   }>;
 
   notes: string;
+  preferredPath?: number;
 };
 
 export type TeamProfile = {
@@ -52,6 +59,9 @@ export type TeamProfile = {
   canClimbLevel1Auton: boolean;
   neutralZoneFeedingAuton: boolean;
   neutralZoneFeedingTeleop: boolean;
+
+  preferredPickupLocation: string;
+  mostCommonStartingPosition: string;
 };
 
 export type TeamProfiles = {
@@ -121,6 +131,48 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
 
   const avgTotalMainScore = (sums.autonShotsAttempted - sums.autonShotsMissed) + (sums.teleopShotsAttempted - sums.teleopShotsMissed);
 
+  // Calculate preferred pickup location from teleop phases
+  const pickupLocationCounts: { [key: number]: number } = {};
+  for (const record of records) {
+    if (record.teleopPhases) {
+      for (const phase of record.teleopPhases) {
+        if (phase.activity === 1 && phase.pickupLocation !== undefined) {  // PICKUP activity
+          pickupLocationCounts[phase.pickupLocation] = (pickupLocationCounts[phase.pickupLocation] || 0) + 1;
+        }
+      }
+    }
+  }
+
+  let preferredPickupLocation = 'N/A';
+  let maxPickupCount = 0;
+  for (const [location, count] of Object.entries(pickupLocationCounts)) {
+    if (count > maxPickupCount) {
+      maxPickupCount = count;
+      const loc = parseInt(location);
+      preferredPickupLocation = loc === 0 ? 'Alliance Zone' :
+        loc === 1 ? 'Outpost' :
+          loc === 2 ? 'Neutral Zone' :
+            loc === 3 ? 'Opponent Area' : 'N/A';
+    }
+  }
+
+  // Calculate most common starting position
+  const startingPositionCounts: { [key: number]: number } = {};
+  for (const record of records) {
+    if (record.startingPosition !== undefined) {
+      startingPositionCounts[record.startingPosition] = (startingPositionCounts[record.startingPosition] || 0) + 1;
+    }
+  }
+
+  let mostCommonStartingPosition = 'N/A';
+  let maxPositionCount = 0;
+  for (const [position, count] of Object.entries(startingPositionCounts)) {
+    if (count > maxPositionCount) {
+      maxPositionCount = count;
+      mostCommonStartingPosition = `P${parseInt(position) + 1}`;
+    }
+  }
+
   return {
     team,
     matchRecords: records,
@@ -139,6 +191,8 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
     canClimbLevel1Auton,
     neutralZoneFeedingAuton,
     neutralZoneFeedingTeleop,
+    preferredPickupLocation,
+    mostCommonStartingPosition,
   };
 }
 

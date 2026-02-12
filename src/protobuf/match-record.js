@@ -441,6 +441,331 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         return TeleopPhaseRecord;
     })();
 
+    /**
+     * AutonPickupLocation enum.
+     * @name troyargonautsprotobuf.AutonPickupLocation
+     * @enum {number}
+     * @property {number} DEPOT=0 DEPOT value
+     * @property {number} OUTPOST=1 OUTPOST value
+     * @property {number} NEUTRAL_ZONE=2 NEUTRAL_ZONE value
+     */
+    troyargonautsprotobuf.AutonPickupLocation = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "DEPOT"] = 0;
+        values[valuesById[1] = "OUTPOST"] = 1;
+        values[valuesById[2] = "NEUTRAL_ZONE"] = 2;
+        return values;
+    })();
+
+    /**
+     * AutonPickupOutcome enum.
+     * @name troyargonautsprotobuf.AutonPickupOutcome
+     * @enum {number}
+     * @property {number} FAILED=0 FAILED value
+     * @property {number} ATTEMPTED=1 ATTEMPTED value
+     * @property {number} SUCCESSFUL=2 SUCCESSFUL value
+     */
+    troyargonautsprotobuf.AutonPickupOutcome = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "FAILED"] = 0;
+        values[valuesById[1] = "ATTEMPTED"] = 1;
+        values[valuesById[2] = "SUCCESSFUL"] = 2;
+        return values;
+    })();
+
+    troyargonautsprotobuf.AutonPickupRecord = (function() {
+
+        /**
+         * Properties of an AutonPickupRecord.
+         * @memberof troyargonautsprotobuf
+         * @interface IAutonPickupRecord
+         * @property {troyargonautsprotobuf.AutonPickupLocation|null} [location] AutonPickupRecord location
+         * @property {troyargonautsprotobuf.AutonPickupOutcome|null} [outcome] AutonPickupRecord outcome
+         */
+
+        /**
+         * Constructs a new AutonPickupRecord.
+         * @memberof troyargonautsprotobuf
+         * @classdesc Represents an AutonPickupRecord.
+         * @implements IAutonPickupRecord
+         * @constructor
+         * @param {troyargonautsprotobuf.IAutonPickupRecord=} [properties] Properties to set
+         */
+        function AutonPickupRecord(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AutonPickupRecord location.
+         * @member {troyargonautsprotobuf.AutonPickupLocation} location
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @instance
+         */
+        AutonPickupRecord.prototype.location = 0;
+
+        /**
+         * AutonPickupRecord outcome.
+         * @member {troyargonautsprotobuf.AutonPickupOutcome} outcome
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @instance
+         */
+        AutonPickupRecord.prototype.outcome = 0;
+
+        /**
+         * Creates a new AutonPickupRecord instance using the specified properties.
+         * @function create
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {troyargonautsprotobuf.IAutonPickupRecord=} [properties] Properties to set
+         * @returns {troyargonautsprotobuf.AutonPickupRecord} AutonPickupRecord instance
+         */
+        AutonPickupRecord.create = function create(properties) {
+            return new AutonPickupRecord(properties);
+        };
+
+        /**
+         * Encodes the specified AutonPickupRecord message. Does not implicitly {@link troyargonautsprotobuf.AutonPickupRecord.verify|verify} messages.
+         * @function encode
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {troyargonautsprotobuf.IAutonPickupRecord} message AutonPickupRecord message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AutonPickupRecord.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.location != null && Object.hasOwnProperty.call(message, "location"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int32(message.location);
+            if (message.outcome != null && Object.hasOwnProperty.call(message, "outcome"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int32(message.outcome);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AutonPickupRecord message, length delimited. Does not implicitly {@link troyargonautsprotobuf.AutonPickupRecord.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {troyargonautsprotobuf.IAutonPickupRecord} message AutonPickupRecord message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AutonPickupRecord.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AutonPickupRecord message from the specified reader or buffer.
+         * @function decode
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {troyargonautsprotobuf.AutonPickupRecord} AutonPickupRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AutonPickupRecord.decode = function decode(reader, length, error) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.troyargonautsprotobuf.AutonPickupRecord();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                if (tag === error)
+                    break;
+                switch (tag >>> 3) {
+                case 1: {
+                        message.location = reader.int32();
+                        break;
+                    }
+                case 2: {
+                        message.outcome = reader.int32();
+                        break;
+                    }
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AutonPickupRecord message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {troyargonautsprotobuf.AutonPickupRecord} AutonPickupRecord
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AutonPickupRecord.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AutonPickupRecord message.
+         * @function verify
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AutonPickupRecord.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.location != null && message.hasOwnProperty("location"))
+                switch (message.location) {
+                default:
+                    return "location: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.outcome != null && message.hasOwnProperty("outcome"))
+                switch (message.outcome) {
+                default:
+                    return "outcome: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            return null;
+        };
+
+        /**
+         * Creates an AutonPickupRecord message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {troyargonautsprotobuf.AutonPickupRecord} AutonPickupRecord
+         */
+        AutonPickupRecord.fromObject = function fromObject(object) {
+            if (object instanceof $root.troyargonautsprotobuf.AutonPickupRecord)
+                return object;
+            let message = new $root.troyargonautsprotobuf.AutonPickupRecord();
+            switch (object.location) {
+            default:
+                if (typeof object.location === "number") {
+                    message.location = object.location;
+                    break;
+                }
+                break;
+            case "DEPOT":
+            case 0:
+                message.location = 0;
+                break;
+            case "OUTPOST":
+            case 1:
+                message.location = 1;
+                break;
+            case "NEUTRAL_ZONE":
+            case 2:
+                message.location = 2;
+                break;
+            }
+            switch (object.outcome) {
+            default:
+                if (typeof object.outcome === "number") {
+                    message.outcome = object.outcome;
+                    break;
+                }
+                break;
+            case "FAILED":
+            case 0:
+                message.outcome = 0;
+                break;
+            case "ATTEMPTED":
+            case 1:
+                message.outcome = 1;
+                break;
+            case "SUCCESSFUL":
+            case 2:
+                message.outcome = 2;
+                break;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AutonPickupRecord message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {troyargonautsprotobuf.AutonPickupRecord} message AutonPickupRecord
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AutonPickupRecord.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.location = options.enums === String ? "DEPOT" : 0;
+                object.outcome = options.enums === String ? "FAILED" : 0;
+            }
+            if (message.location != null && message.hasOwnProperty("location"))
+                object.location = options.enums === String ? $root.troyargonautsprotobuf.AutonPickupLocation[message.location] === undefined ? message.location : $root.troyargonautsprotobuf.AutonPickupLocation[message.location] : message.location;
+            if (message.outcome != null && message.hasOwnProperty("outcome"))
+                object.outcome = options.enums === String ? $root.troyargonautsprotobuf.AutonPickupOutcome[message.outcome] === undefined ? message.outcome : $root.troyargonautsprotobuf.AutonPickupOutcome[message.outcome] : message.outcome;
+            return object;
+        };
+
+        /**
+         * Converts this AutonPickupRecord to JSON.
+         * @function toJSON
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AutonPickupRecord.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        /**
+         * Gets the default type url for AutonPickupRecord
+         * @function getTypeUrl
+         * @memberof troyargonautsprotobuf.AutonPickupRecord
+         * @static
+         * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+         * @returns {string} The default type url
+         */
+        AutonPickupRecord.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+            if (typeUrlPrefix === undefined) {
+                typeUrlPrefix = "type.googleapis.com";
+            }
+            return typeUrlPrefix + "/troyargonautsprotobuf.AutonPickupRecord";
+        };
+
+        return AutonPickupRecord;
+    })();
+
+    /**
+     * PreferredPath enum.
+     * @name troyargonautsprotobuf.PreferredPath
+     * @enum {number}
+     * @property {number} NONE=0 NONE value
+     * @property {number} BUMP=1 BUMP value
+     * @property {number} TRENCH=2 TRENCH value
+     */
+    troyargonautsprotobuf.PreferredPath = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NONE"] = 0;
+        values[valuesById[1] = "BUMP"] = 1;
+        values[valuesById[2] = "TRENCH"] = 2;
+        return values;
+    })();
+
     troyargonautsprotobuf.MatchRecord = (function() {
 
         /**
@@ -456,6 +781,7 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {Array.<troyargonautsprotobuf.ITeleopPhaseRecord>|null} [teleopPhases] MatchRecord teleopPhases
          * @property {number|null} [preloadedGameElements] MatchRecord preloadedGameElements
          * @property {boolean|null} [robotMovedInAuton] MatchRecord robotMovedInAuton
+         * @property {Array.<troyargonautsprotobuf.IAutonPickupRecord>|null} [autonPickups] MatchRecord autonPickups
          * @property {number|null} [autonShotsMissed] MatchRecord autonShotsMissed
          * @property {number|null} [autonShotsAttempted] MatchRecord autonShotsAttempted
          * @property {number|null} [teleopShotsMissed] MatchRecord teleopShotsMissed
@@ -467,6 +793,7 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {boolean|null} [neutralZoneFeedingAuton] MatchRecord neutralZoneFeedingAuton
          * @property {boolean|null} [neutralZoneFeedingTeleop] MatchRecord neutralZoneFeedingTeleop
          * @property {string|null} [notes] MatchRecord notes
+         * @property {troyargonautsprotobuf.PreferredPath|null} [preferredPath] MatchRecord preferredPath
          */
 
         /**
@@ -479,6 +806,7 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          */
         function MatchRecord(properties) {
             this.teleopPhases = [];
+            this.autonPickups = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -556,6 +884,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @instance
          */
         MatchRecord.prototype.robotMovedInAuton = false;
+
+        /**
+         * MatchRecord autonPickups.
+         * @member {Array.<troyargonautsprotobuf.IAutonPickupRecord>} autonPickups
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.autonPickups = $util.emptyArray;
 
         /**
          * MatchRecord autonShotsMissed.
@@ -646,6 +982,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         MatchRecord.prototype.notes = "";
 
         /**
+         * MatchRecord preferredPath.
+         * @member {troyargonautsprotobuf.PreferredPath} preferredPath
+         * @memberof troyargonautsprotobuf.MatchRecord
+         * @instance
+         */
+        MatchRecord.prototype.preferredPath = 0;
+
+        /**
          * Creates a new MatchRecord instance using the specified properties.
          * @function create
          * @memberof troyargonautsprotobuf.MatchRecord
@@ -710,6 +1054,11 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                     $root.troyargonautsprotobuf.TeleopPhaseRecord.encode(message.teleopPhases[i], writer.uint32(/* id 19, wireType 2 =*/154).fork()).ldelim();
             if (message.robotMovedInAuton != null && Object.hasOwnProperty.call(message, "robotMovedInAuton"))
                 writer.uint32(/* id 20, wireType 0 =*/160).bool(message.robotMovedInAuton);
+            if (message.autonPickups != null && message.autonPickups.length)
+                for (let i = 0; i < message.autonPickups.length; ++i)
+                    $root.troyargonautsprotobuf.AutonPickupRecord.encode(message.autonPickups[i], writer.uint32(/* id 21, wireType 2 =*/170).fork()).ldelim();
+            if (message.preferredPath != null && Object.hasOwnProperty.call(message, "preferredPath"))
+                writer.uint32(/* id 22, wireType 0 =*/176).int32(message.preferredPath);
             return writer;
         };
 
@@ -784,6 +1133,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                         message.robotMovedInAuton = reader.bool();
                         break;
                     }
+                case 21: {
+                        if (!(message.autonPickups && message.autonPickups.length))
+                            message.autonPickups = [];
+                        message.autonPickups.push($root.troyargonautsprotobuf.AutonPickupRecord.decode(reader, reader.uint32()));
+                        break;
+                    }
                 case 5: {
                         message.autonShotsMissed = reader.uint32();
                         break;
@@ -826,6 +1181,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                     }
                 case 12: {
                         message.notes = reader.string();
+                        break;
+                    }
+                case 22: {
+                        message.preferredPath = reader.int32();
                         break;
                     }
                 default:
@@ -913,6 +1272,15 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.robotMovedInAuton != null && message.hasOwnProperty("robotMovedInAuton"))
                 if (typeof message.robotMovedInAuton !== "boolean")
                     return "robotMovedInAuton: boolean expected";
+            if (message.autonPickups != null && message.hasOwnProperty("autonPickups")) {
+                if (!Array.isArray(message.autonPickups))
+                    return "autonPickups: array expected";
+                for (let i = 0; i < message.autonPickups.length; ++i) {
+                    let error = $root.troyargonautsprotobuf.AutonPickupRecord.verify(message.autonPickups[i]);
+                    if (error)
+                        return "autonPickups." + error;
+                }
+            }
             if (message.autonShotsMissed != null && message.hasOwnProperty("autonShotsMissed"))
                 if (!$util.isInteger(message.autonShotsMissed))
                     return "autonShotsMissed: integer expected";
@@ -953,6 +1321,15 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (message.notes != null && message.hasOwnProperty("notes"))
                 if (!$util.isString(message.notes))
                     return "notes: string expected";
+            if (message.preferredPath != null && message.hasOwnProperty("preferredPath"))
+                switch (message.preferredPath) {
+                default:
+                    return "preferredPath: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
             return null;
         };
 
@@ -1050,6 +1427,16 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.preloadedGameElements = object.preloadedGameElements >>> 0;
             if (object.robotMovedInAuton != null)
                 message.robotMovedInAuton = Boolean(object.robotMovedInAuton);
+            if (object.autonPickups) {
+                if (!Array.isArray(object.autonPickups))
+                    throw TypeError(".troyargonautsprotobuf.MatchRecord.autonPickups: array expected");
+                message.autonPickups = [];
+                for (let i = 0; i < object.autonPickups.length; ++i) {
+                    if (typeof object.autonPickups[i] !== "object")
+                        throw TypeError(".troyargonautsprotobuf.MatchRecord.autonPickups: object expected");
+                    message.autonPickups[i] = $root.troyargonautsprotobuf.AutonPickupRecord.fromObject(object.autonPickups[i]);
+                }
+            }
             if (object.autonShotsMissed != null)
                 message.autonShotsMissed = object.autonShotsMissed >>> 0;
             if (object.autonShotsAttempted != null)
@@ -1094,6 +1481,26 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.neutralZoneFeedingTeleop = Boolean(object.neutralZoneFeedingTeleop);
             if (object.notes != null)
                 message.notes = String(object.notes);
+            switch (object.preferredPath) {
+            default:
+                if (typeof object.preferredPath === "number") {
+                    message.preferredPath = object.preferredPath;
+                    break;
+                }
+                break;
+            case "NONE":
+            case 0:
+                message.preferredPath = 0;
+                break;
+            case "BUMP":
+            case 1:
+                message.preferredPath = 1;
+                break;
+            case "TRENCH":
+            case 2:
+                message.preferredPath = 2;
+                break;
+            }
             return message;
         };
 
@@ -1110,8 +1517,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults)
+            if (options.arrays || options.defaults) {
                 object.teleopPhases = [];
+                object.autonPickups = [];
+            }
             if (options.defaults) {
                 object.id = "";
                 object.team = "";
@@ -1132,6 +1541,7 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.alliance = options.enums === String ? "R1" : 0;
                 object.startingPosition = options.enums === String ? "P1" : 0;
                 object.robotMovedInAuton = false;
+                object.preferredPath = options.enums === String ? "NONE" : 0;
             }
             if (message.id != null && message.hasOwnProperty("id"))
                 object.id = message.id;
@@ -1176,6 +1586,13 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
             }
             if (message.robotMovedInAuton != null && message.hasOwnProperty("robotMovedInAuton"))
                 object.robotMovedInAuton = message.robotMovedInAuton;
+            if (message.autonPickups && message.autonPickups.length) {
+                object.autonPickups = [];
+                for (let j = 0; j < message.autonPickups.length; ++j)
+                    object.autonPickups[j] = $root.troyargonautsprotobuf.AutonPickupRecord.toObject(message.autonPickups[j], options);
+            }
+            if (message.preferredPath != null && message.hasOwnProperty("preferredPath"))
+                object.preferredPath = options.enums === String ? $root.troyargonautsprotobuf.PreferredPath[message.preferredPath] === undefined ? message.preferredPath : $root.troyargonautsprotobuf.PreferredPath[message.preferredPath] : message.preferredPath;
             return object;
         };
 

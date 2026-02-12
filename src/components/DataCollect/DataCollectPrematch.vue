@@ -87,15 +87,6 @@ const startingPositionOptions: {
       hint="Number of game pieces loaded at start"
     />
 
-    <v-checkbox
-      v-model="matchRecord.robotMovedInAuton"
-      label="Robot Moved in Auton"
-      color="primary"
-      hide-details
-      class="mt-2"
-      :disabled="disabled"
-    ></v-checkbox>
-
     <!-- Alliance Selection -->
     <div class="mt-6">
       <h3 class="text-h6 text-center mb-2">Alliance Selection</h3>

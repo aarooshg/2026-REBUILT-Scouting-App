@@ -48,6 +48,26 @@ defineEmits(['save']);
       </v-card-text>
     </v-card>
 
+    <v-card class="mx-auto my-6" elevation="12" max-width="520" style="border-radius: 24px">
+      <v-card-item>
+        <v-card-title class="text-center font-weight-bold">Preferred Path</v-card-title>
+        <v-card-subtitle class="text-center">Which path did the robot prefer?</v-card-subtitle>
+      </v-card-item>
+      <v-card-text>
+        <v-btn-toggle v-model="matchRecord.preferredPath" class="mx-auto d-flex justify-center" mandatory>
+          <v-btn :value="troyargonautsprotobuf.PreferredPath.BUMP" color="primary" style="flex: 1">
+            Bump
+          </v-btn>
+          <v-btn :value="troyargonautsprotobuf.PreferredPath.TRENCH" color="primary" style="flex: 1">
+            Trench
+          </v-btn>
+          <v-btn :value="troyargonautsprotobuf.PreferredPath.NONE" color="primary" style="flex: 1">
+            None
+          </v-btn>
+        </v-btn-toggle>
+      </v-card-text>
+    </v-card>
+
     <v-text-field
       clearable
       label="Additional Comments"

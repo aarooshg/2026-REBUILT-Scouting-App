@@ -88,6 +88,17 @@ watch(() => matchRecord.value.teleopPhases, () => {
   }
 }, { immediate: true, deep: true });
 
+// Watch for feeding activity in any phase and update neutralZoneFeedingTeleop
+watch(() => matchRecord.value.teleopPhases, (phases) => {
+  if (!phases) return;
+  
+  // Check if any phase has Fed activity (value 3)
+  const hasFeedingActivity = phases.some(phase => phase?.activity === 3);
+  
+  // Update the neutralZoneFeedingTeleop flag
+  matchRecord.value.neutralZoneFeedingTeleop = hasFeedingActivity;
+}, { deep: true });
+
 </script>
 
 <template>
