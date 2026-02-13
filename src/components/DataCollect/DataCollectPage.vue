@@ -68,40 +68,13 @@ const { pause, resume, isActive } = useIntervalFn(
   { immediate: false },
 );
 
-// Dev mode
-const devModeEnabled = ref(false);
-const devModeDialogOpen = ref(false);
-const devModePassword = ref('');
-const devModePasswordError = ref(false);
+/** tabs are disabled before match starts, to force prematch first */
+const disableTabs = computed(() => !matchStarted.value);
 
-function openDevModeDialog() {
-  devModeDialogOpen.value = true;
-  devModePassword.value = '';
-  devModePasswordError.value = false;
-}
-
-function checkDevModePassword() {
-  if (devModePassword.value === '1234') {
-    devModeEnabled.value = true;
-    devModeDialogOpen.value = false;
-    devModePassword.value = '';
-    devModePasswordError.value = false;
-  } else {
-    devModePasswordError.value = true;
-  }
-}
-
-function disableDevMode() {
-  devModeEnabled.value = false;
-}
-
-/** tabs are disabled before match starts, to force prematch first (unless dev mode) */
-const disableTabs = computed(() => !matchStarted.value && !devModeEnabled.value);
-
-/** Allow users to navigate freely between tabs once match has started or dev mode is on */
-const canNavigateToAuton = computed(() => matchStarted.value || devModeEnabled.value);
-const canNavigateToTeleop = computed(() => matchStarted.value || devModeEnabled.value);
-const canNavigateToPostmatch = computed(() => matchStarted.value || devModeEnabled.value);
+/** Allow users to navigate freely between tabs once match has started */
+const canNavigateToAuton = computed(() => matchStarted.value);
+const canNavigateToTeleop = computed(() => matchStarted.value);
+const canNavigateToPostmatch = computed(() => matchStarted.value);
 
 function startMatch() {
   elapsedTimeMs.value = 0;
@@ -190,58 +163,11 @@ function onSaveBtn() {
     </v-card>
   </v-dialog>
 
-  <v-dialog v-model="devModeDialogOpen" max-width="400">
-    <v-card>
-      <v-card-title class="text-center font-weight-bold">Dev Mode</v-card-title>
-      <v-card-text>
-        <v-text-field
-          v-model="devModePassword"
-          label="Enter Password"
-          type="password"
-          variant="outlined"
-          :error="devModePasswordError"
-          :error-messages="devModePasswordError ? 'Incorrect password' : ''"
-          @keyup.enter="checkDevModePassword"
-          autofocus
-        ></v-text-field>
-      </v-card-text>
-      <v-card-actions class="justify-center">
-        <v-btn color="grey" variant="text" @click="devModeDialogOpen = false">Cancel</v-btn>
-        <v-btn color="primary" variant="flat" @click="checkDevModePassword">Unlock</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
   <v-tabs v-model="matchPhase" bg-color="secondary" color="white" align-tabs="center">
     <v-tab value="prematch">Pre-match</v-tab>
     <v-tab value="auton" :disabled="!canNavigateToAuton">Auton</v-tab>
     <v-tab value="teleop" :disabled="!canNavigateToTeleop">Teleop</v-tab>
     <v-tab value="postmatch" :disabled="!canNavigateToPostmatch">Post-match</v-tab>
-    
-    <v-spacer></v-spacer>
-    
-    <v-btn
-      v-if="!devModeEnabled"
-      @click="openDevModeDialog"
-      icon
-      size="small"
-      variant="text"
-      class="mr-2"
-    >
-      <v-icon>mdi-developer-board</v-icon>
-    </v-btn>
-    
-    <v-chip
-      v-else
-      color="warning"
-      variant="flat"
-      closable
-      @click:close="disableDevMode"
-      class="mr-2"
-    >
-      <v-icon start>mdi-developer-board</v-icon>
-      Dev Mode
-    </v-chip>
   </v-tabs>
 
   <div class="ma-2 pa-2">
