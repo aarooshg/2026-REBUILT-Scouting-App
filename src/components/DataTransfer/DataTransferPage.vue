@@ -3,16 +3,45 @@ import { ref } from 'vue';
 import DataTransferSend from './DataTransferSend.vue';
 import DataTransferReceive from './DataTransferReceive.vue';
 import { matchRecords } from '../DataCollect/MatchRecords';
+import { csvify, type MatchRecord } from '@/data';
 
 const mode = ref<'modeSelection' | 'send' | 'receive'>('modeSelection');
 
 function exportData() {
-  const data = JSON.stringify(matchRecords.value);
-  const blob = new Blob([data], { type: 'application/json' });
+  // Define CSV headers for all match record fields
+  const headers: Partial<Record<keyof MatchRecord, string>> = {
+    id: 'id',
+    team: 'team',
+    match: 'match',
+    scouter: 'scouter',
+    alliance: 'alliance',
+    startingPosition: 'startingPosition',
+    preloadedGameElements: 'preloadedGameElements',
+    robotMovedInAuton: 'robotMovedInAuton',
+    autonShotsMissed: 'autonShotsMissed',
+    autonShotsAttempted: 'autonShotsAttempted',
+    teleopShotsMissed: 'teleopShotsMissed',
+    teleopShotsAttempted: 'teleopShotsAttempted',
+    climbLevel: 'climbLevel',
+    canGoOverBump: 'canGoOverBump',
+    canGoUnderTrench: 'canGoUnderTrench',
+    canClimbLevel1Auton: 'canClimbLevel1Auton',
+    neutralZoneFeedingAuton: 'neutralZoneFeedingAuton',
+    neutralZoneFeedingTeleop: 'neutralZoneFeedingTeleop',
+    notes: 'notes',
+    preferredPath: 'preferredPath',
+  };
+
+  const csvData = csvify(matchRecords.value, headers);
+  const blob = new Blob([csvData], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `match-records-${Date.now()}.json`;
+  
+  // Generate random numbers for ArgoData filename
+  const randomNum = Math.floor(Math.random() * 1000000000);
+  a.download = `ArgoData-${randomNum}.csv`;
+
   a.click();
   URL.revokeObjectURL(url);
   a.remove();
@@ -21,26 +50,69 @@ function exportData() {
 function importData() {
   const input = document.createElement('input');
   input.type = 'file';
-  input.accept = '.json';
+  input.accept = '.csv';  // Changed from .json to .csv
   input.onchange = (event) => {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onload = (e) => {
-      const data = e.target?.result;
-      if (!data) return;
+      const csvText = e.target?.result as string;
+      if (!csvText) return;
 
-      const importedMatchRecords = JSON.parse(data as string);
-      let newRecords = 0;
-      for (const importedRecord of importedMatchRecords) {
-        if (!matchRecords.value.some((r) => r.id === importedRecord.id)) {
-          matchRecords.value.push(importedRecord);
-          newRecords++;
+      try {
+        // Parse CSV
+        const lines = csvText.trim().split('\n');
+        if (lines.length < 2) {
+          alert('Invalid CSV file: No data found');
+          return;
         }
+
+        const headers = lines[0].split(',');
+        const importedMatchRecords: MatchRecord[] = [];
+
+        for (let i = 1; i < lines.length; i++) {
+          if (!lines[i].trim()) continue;
+
+          const values = lines[i].split(',');
+          const record: any = {};
+
+          headers.forEach((header, index) => {
+            const value = values[index];
+            
+            // Type conversion for specific fields
+            if (header === 'preloadedGameElements' || header === 'autonShotsMissed' || 
+                header === 'autonShotsAttempted' || header === 'teleopShotsMissed' || 
+                header === 'teleopShotsAttempted' || header === 'climbLevel' ||
+                header === 'alliance' || header === 'startingPosition' || header === 'preferredPath') {
+              record[header] = value ? parseInt(value) : 0;
+            } else if (header === 'robotMovedInAuton' || header === 'canGoOverBump' || 
+                       header === 'canGoUnderTrench' || header === 'canClimbLevel1Auton' ||
+                       header === 'neutralZoneFeedingAuton' || header === 'neutralZoneFeedingTeleop') {
+              record[header] = value === 'true';
+            } else {
+              record[header] = value || '';
+            }
+          });
+
+          importedMatchRecords.push(record as MatchRecord);
+        }
+
+        // Merge with existing records (avoid duplicates by ID)
+        let newRecords = 0;
+        for (const importedRecord of importedMatchRecords) {
+          if (!matchRecords.value.some((r) => r.id === importedRecord.id)) {
+            matchRecords.value.push(importedRecord);
+            newRecords++;
+          }
+        }
+
+        input.remove();
+        alert(`Imported ${newRecords} new match records from CSV`);
+      } catch (error) {
+        alert(`Error parsing CSV file: ${error}`);
+        input.remove();
       }
-      input.remove();
-      alert(`Imported ${newRecords} new match records`);
     };
     reader.readAsText(file);
   };

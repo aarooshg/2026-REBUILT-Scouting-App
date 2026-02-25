@@ -32,12 +32,12 @@ export function initMatchRecord(): MatchRecord {
     neutralZoneFeedingTeleop: false,
 
     teleopPhases: [
-      { phase: 0, activity: undefined, pickupLocation: undefined },
-      { phase: 1, activity: undefined, pickupLocation: undefined },
-      { phase: 2, activity: undefined, pickupLocation: undefined },
-      { phase: 3, activity: undefined, pickupLocation: undefined },
-      { phase: 4, activity: undefined, pickupLocation: undefined },
-      { phase: 5, activity: undefined, pickupLocation: undefined },
+      { phase: 0, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
+      { phase: 1, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
+      { phase: 2, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
+      { phase: 3, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
+      { phase: 4, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
+      { phase: 5, activity: undefined, pickupLocation: undefined, shotsMissed: 0, shotsAttempted: 0 },
     ],
 
     notes: '',

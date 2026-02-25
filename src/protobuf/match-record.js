@@ -101,6 +101,8 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
          * @property {troyargonautsprotobuf.TeleopPhase|null} [phase] TeleopPhaseRecord phase
          * @property {troyargonautsprotobuf.PhaseActivity|null} [activity] TeleopPhaseRecord activity
          * @property {troyargonautsprotobuf.PickupLocation|null} [pickupLocation] TeleopPhaseRecord pickupLocation
+         * @property {number|null} [shotsMissed] TeleopPhaseRecord shotsMissed
+         * @property {number|null} [shotsAttempted] TeleopPhaseRecord shotsAttempted
          */
 
         /**
@@ -143,6 +145,22 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
         TeleopPhaseRecord.prototype.pickupLocation = 0;
 
         /**
+         * TeleopPhaseRecord shotsMissed.
+         * @member {number} shotsMissed
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         */
+        TeleopPhaseRecord.prototype.shotsMissed = 0;
+
+        /**
+         * TeleopPhaseRecord shotsAttempted.
+         * @member {number} shotsAttempted
+         * @memberof troyargonautsprotobuf.TeleopPhaseRecord
+         * @instance
+         */
+        TeleopPhaseRecord.prototype.shotsAttempted = 0;
+
+        /**
          * Creates a new TeleopPhaseRecord instance using the specified properties.
          * @function create
          * @memberof troyargonautsprotobuf.TeleopPhaseRecord
@@ -172,6 +190,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 writer.uint32(/* id 2, wireType 0 =*/16).int32(message.activity);
             if (message.pickupLocation != null && Object.hasOwnProperty.call(message, "pickupLocation"))
                 writer.uint32(/* id 3, wireType 0 =*/24).int32(message.pickupLocation);
+            if (message.shotsMissed != null && Object.hasOwnProperty.call(message, "shotsMissed"))
+                writer.uint32(/* id 4, wireType 0 =*/32).uint32(message.shotsMissed);
+            if (message.shotsAttempted != null && Object.hasOwnProperty.call(message, "shotsAttempted"))
+                writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.shotsAttempted);
             return writer;
         };
 
@@ -218,6 +240,14 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                     }
                 case 3: {
                         message.pickupLocation = reader.int32();
+                        break;
+                    }
+                case 4: {
+                        message.shotsMissed = reader.uint32();
+                        break;
+                    }
+                case 5: {
+                        message.shotsAttempted = reader.uint32();
                         break;
                     }
                 default:
@@ -287,6 +317,12 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 case 3:
                     break;
                 }
+            if (message.shotsMissed != null && message.hasOwnProperty("shotsMissed"))
+                if (!$util.isInteger(message.shotsMissed))
+                    return "shotsMissed: integer expected";
+            if (message.shotsAttempted != null && message.hasOwnProperty("shotsAttempted"))
+                if (!$util.isInteger(message.shotsAttempted))
+                    return "shotsAttempted: integer expected";
             return null;
         };
 
@@ -382,6 +418,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 message.pickupLocation = 3;
                 break;
             }
+            if (object.shotsMissed != null)
+                message.shotsMissed = object.shotsMissed >>> 0;
+            if (object.shotsAttempted != null)
+                message.shotsAttempted = object.shotsAttempted >>> 0;
             return message;
         };
 
@@ -402,6 +442,8 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.phase = options.enums === String ? "TRANSITION_SHIFT" : 0;
                 object.activity = options.enums === String ? "SCORED" : 0;
                 object.pickupLocation = options.enums === String ? "ALLIANCE_ZONE" : 0;
+                object.shotsMissed = 0;
+                object.shotsAttempted = 0;
             }
             if (message.phase != null && message.hasOwnProperty("phase"))
                 object.phase = options.enums === String ? $root.troyargonautsprotobuf.TeleopPhase[message.phase] === undefined ? message.phase : $root.troyargonautsprotobuf.TeleopPhase[message.phase] : message.phase;
@@ -409,6 +451,10 @@ export const troyargonautsprotobuf = $root.troyargonautsprotobuf = (() => {
                 object.activity = options.enums === String ? $root.troyargonautsprotobuf.PhaseActivity[message.activity] === undefined ? message.activity : $root.troyargonautsprotobuf.PhaseActivity[message.activity] : message.activity;
             if (message.pickupLocation != null && message.hasOwnProperty("pickupLocation"))
                 object.pickupLocation = options.enums === String ? $root.troyargonautsprotobuf.PickupLocation[message.pickupLocation] === undefined ? message.pickupLocation : $root.troyargonautsprotobuf.PickupLocation[message.pickupLocation] : message.pickupLocation;
+            if (message.shotsMissed != null && message.hasOwnProperty("shotsMissed"))
+                object.shotsMissed = message.shotsMissed;
+            if (message.shotsAttempted != null && message.hasOwnProperty("shotsAttempted"))
+                object.shotsAttempted = message.shotsAttempted;
             return object;
         };
 

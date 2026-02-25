@@ -68,3 +68,10 @@ const pageTitle = computed(() => {
   </v-app>
 </template>
 
+<style>
+/* Prevent double-tap zoom on buttons so rapid taps (e.g. score increment) work smoothly on mobile */
+button,
+.v-btn {
+  touch-action: manipulation;
+}
+</style>

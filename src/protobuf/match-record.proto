@@ -36,6 +36,8 @@ message TeleopPhaseRecord {
   TeleopPhase phase = 1;
   PhaseActivity activity = 2;
   PickupLocation pickupLocation = 3;  // Only used when activity is PICKUP
+  uint32 shotsMissed = 4;  // Only used when activity is SCORED
+  uint32 shotsAttempted = 5;  // Only used when activity is SCORED
 }
 
 enum AutonPickupLocation {

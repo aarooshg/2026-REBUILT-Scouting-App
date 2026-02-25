@@ -92,10 +92,37 @@ function getPhaseActivity(item: MatchRecord, phaseIndex: number): string {
   if (!item.teleopPhases || !item.teleopPhases[phaseIndex]) return '-';
   const phase = item.teleopPhases[phaseIndex];
   const activity = activityLabel(phase.activity);
+  
+  if (phase.activity === 0) {  // SCORED activity
+    const attempted = phase.shotsAttempted || 0;
+    const missed = phase.shotsMissed || 0;
+    const made = attempted - missed;
+    const accuracy = attempted > 0 ? roundToDecimal((made / attempted) * 100, 1) : 0;
+    return `${activity} (${attempted}A/${made}M — ${accuracy}%)`;
+  }
+  
   if (phase.activity === 1 && phase.pickupLocation !== undefined) {
     return `${activity} (${pickupLocationLabel(phase.pickupLocation)})`;
   }
+  
   return activity;
+}
+
+function preferredPathLabel(path: number | undefined): string {
+  switch (path) {
+    case 1: return 'Bump';
+    case 2: return 'Trench';
+    default: return 'None';
+  }
+}
+
+function getMatchAccuracy(item: MatchRecord): string {
+  const attempted = item.teleopShotsAttempted || 0;
+  const missed = item.teleopShotsMissed || 0;
+  if (attempted === 0) return 'N/A';
+  const made = attempted - missed;
+  const accuracy = roundToDecimal((made / attempted) * 100, 1);
+  return `${accuracy}% (${made}/${attempted})`;
 }
 
 function autonPickupLocationLabel(location: number | undefined): string {
@@ -140,7 +167,7 @@ const innerHeaderTitles: Partial<Record<keyof MatchRecord | 'delete', string>> =
   canClimbLevel1Auton: 'Auton L1 Climb',
   neutralZoneFeedingAuton: 'Auton NZ Feed',
   neutralZoneFeedingTeleop: 'Teleop NZ Feed',
-  notes: 'Notes',
+  // notes intentionally omitted here — added manually after phase columns
   delete: 'Delete',
 };
 
@@ -153,6 +180,18 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   avgTeleopShotsAttempted: 'Avg Teleop Attempted',
   avgTeleopAccuracy: 'Avg Teleop Accuracy %',
   avgTotalMainScore: 'Avg Total Made',
+  avgPhase0ShotsAttempted: 'Avg T.Shift Attempted',
+  avgPhase0ShotsMade: 'Avg T.Shift Made',
+  avgPhase1ShotsAttempted: 'Avg S1 Attempted',
+  avgPhase1ShotsMade: 'Avg S1 Made',
+  avgPhase2ShotsAttempted: 'Avg S2 Attempted',
+  avgPhase2ShotsMade: 'Avg S2 Made',
+  avgPhase3ShotsAttempted: 'Avg S3 Attempted',
+  avgPhase3ShotsMade: 'Avg S3 Made',
+  avgPhase4ShotsAttempted: 'Avg S4 Attempted',
+  avgPhase4ShotsMade: 'Avg S4 Made',
+  avgPhase5ShotsAttempted: 'Avg EG Attempted',
+  avgPhase5ShotsMade: 'Avg EG Made',
   canClimbLevel1: 'Can Climb L1',
   canClimbLevel2: 'Can Climb L2',
   canClimbLevel3: 'Can Climb L3',
@@ -163,9 +202,10 @@ const headerTitles: Partial<Record<keyof TeamProfile, string>> = {
   neutralZoneFeedingTeleop: 'Teleop NZ Feed',
   preferredPickupLocation: 'Preferred Pickup',
   mostCommonStartingPosition: 'Common Start Pos',
+  mostCommonPath: 'Common Path',
 };
 
-type InnerColumnKey = keyof MatchRecord | 'delete' | 'phase0' | 'phase1' | 'phase2' | 'phase3' | 'phase4' | 'phase5' | 'autonPickups';
+type InnerColumnKey = keyof MatchRecord | 'delete' | 'phase0' | 'phase1' | 'phase2' | 'phase3' | 'phase4' | 'phase5' | 'autonPickups' | 'matchAccuracy';
 
 const innerHeaders = [
   ...Object.entries(innerHeaderTitles)
@@ -182,6 +222,9 @@ const innerHeaders = [
   { value: 'phase3' as InnerColumnKey, title: 'Shift 3', sortable: false },
   { value: 'phase4' as InnerColumnKey, title: 'Shift 4', sortable: false },
   { value: 'phase5' as InnerColumnKey, title: 'End Game', sortable: false },
+  { value: 'matchAccuracy' as InnerColumnKey, title: 'Match Accuracy', sortable: false },
+  { value: 'preferredPath' as InnerColumnKey, title: 'Preferred Path', sortable: false },
+  { value: 'notes' as InnerColumnKey, title: 'Notes', sortable: true },
   { value: 'delete' as InnerColumnKey, title: 'Delete', sortable: false },
 ];
 
@@ -331,7 +374,7 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
               :key="header.value"
               v-slot:[`item.${header.value}`]="{ item }"
             >
-              <td @dblclick="header.value !== 'delete' && !header.value.startsWith('phase') && header.value !== 'autonPickups' ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
+              <td @dblclick="header.value !== 'delete' && !header.value.startsWith('phase') && header.value !== 'autonPickups' && header.value !== 'matchAccuracy' && header.value !== 'preferredPath' ? editMatchRecord(item, header.value as keyof MatchRecord) : undefined">
                 <span v-if="header.value === 'climbLevel'">{{ climbLabel(item.climbLevel) }}</span>
                 <span v-else-if="header.value === 'autonPickups'">{{ getAutonPickups(item) }}</span>
                 <span v-else-if="header.value === 'phase0'">{{ getPhaseActivity(item, 0) }}</span>
@@ -340,6 +383,8 @@ function editMatchRecord(item: MatchRecord, header: keyof MatchRecord) {
                 <span v-else-if="header.value === 'phase3'">{{ getPhaseActivity(item, 3) }}</span>
                 <span v-else-if="header.value === 'phase4'">{{ getPhaseActivity(item, 4) }}</span>
                 <span v-else-if="header.value === 'phase5'">{{ getPhaseActivity(item, 5) }}</span>
+                <span v-else-if="header.value === 'matchAccuracy'">{{ getMatchAccuracy(item) }}</span>
+                <span v-else-if="header.value === 'preferredPath'">{{ preferredPathLabel(item.preferredPath) }}</span>
                 <span v-else-if="header.value !== 'delete'">{{ item[header.value as keyof MatchRecord] }}</span>
               </td>
             </template>

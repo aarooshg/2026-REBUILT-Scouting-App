@@ -32,6 +32,8 @@ export type MatchRecord = {
     phase?: number;
     activity?: number;
     pickupLocation?: number;
+    shotsMissed?: number;
+    shotsAttempted?: number;
   }>;
 
   notes: string;
@@ -50,6 +52,20 @@ export type TeamProfile = {
   avgTeleopAccuracy: number;
   avgTotalMainScore: number;
 
+  // Per-phase statistics
+  avgPhase0ShotsAttempted: number;
+  avgPhase0ShotsMade: number;
+  avgPhase1ShotsAttempted: number;
+  avgPhase1ShotsMade: number;
+  avgPhase2ShotsAttempted: number;
+  avgPhase2ShotsMade: number;
+  avgPhase3ShotsAttempted: number;
+  avgPhase3ShotsMade: number;
+  avgPhase4ShotsAttempted: number;
+  avgPhase4ShotsMade: number;
+  avgPhase5ShotsAttempted: number;
+  avgPhase5ShotsMade: number;
+
   canClimbLevel1: boolean;
   canClimbLevel2: boolean;
   canClimbLevel3: boolean;
@@ -62,6 +78,7 @@ export type TeamProfile = {
 
   preferredPickupLocation: string;
   mostCommonStartingPosition: string;
+  mostCommonPath: string;
 };
 
 export type TeamProfiles = {
@@ -131,6 +148,76 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
 
   const avgTotalMainScore = (sums.autonShotsAttempted - sums.autonShotsMissed) + (sums.teleopShotsAttempted - sums.teleopShotsMissed);
 
+  // Calculate per-phase statistics
+  const phaseSums = {
+    phase0Attempted: 0,
+    phase0Made: 0,
+    phase1Attempted: 0,
+    phase1Made: 0,
+    phase2Attempted: 0,
+    phase2Made: 0,
+    phase3Attempted: 0,
+    phase3Made: 0,
+    phase4Attempted: 0,
+    phase4Made: 0,
+    phase5Attempted: 0,
+    phase5Made: 0,
+  };
+
+  for (const record of records) {
+    if (record.teleopPhases) {
+      for (let i = 0; i < 6; i++) {
+        const phase = record.teleopPhases[i];
+        if (phase && phase.activity === 0) {  // SCORED activity
+          const attempted = phase.shotsAttempted || 0;
+          const missed = phase.shotsMissed || 0;
+          const made = attempted - missed;
+
+          switch (i) {
+            case 0:
+              phaseSums.phase0Attempted += attempted;
+              phaseSums.phase0Made += made;
+              break;
+            case 1:
+              phaseSums.phase1Attempted += attempted;
+              phaseSums.phase1Made += made;
+              break;
+            case 2:
+              phaseSums.phase2Attempted += attempted;
+              phaseSums.phase2Made += made;
+              break;
+            case 3:
+              phaseSums.phase3Attempted += attempted;
+              phaseSums.phase3Made += made;
+              break;
+            case 4:
+              phaseSums.phase4Attempted += attempted;
+              phaseSums.phase4Made += made;
+              break;
+            case 5:
+              phaseSums.phase5Attempted += attempted;
+              phaseSums.phase5Made += made;
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  // Calculate averages for each phase
+  const avgPhase0ShotsAttempted = records.length ? phaseSums.phase0Attempted / records.length : 0;
+  const avgPhase0ShotsMade = records.length ? phaseSums.phase0Made / records.length : 0;
+  const avgPhase1ShotsAttempted = records.length ? phaseSums.phase1Attempted / records.length : 0;
+  const avgPhase1ShotsMade = records.length ? phaseSums.phase1Made / records.length : 0;
+  const avgPhase2ShotsAttempted = records.length ? phaseSums.phase2Attempted / records.length : 0;
+  const avgPhase2ShotsMade = records.length ? phaseSums.phase2Made / records.length : 0;
+  const avgPhase3ShotsAttempted = records.length ? phaseSums.phase3Attempted / records.length : 0;
+  const avgPhase3ShotsMade = records.length ? phaseSums.phase3Made / records.length : 0;
+  const avgPhase4ShotsAttempted = records.length ? phaseSums.phase4Attempted / records.length : 0;
+  const avgPhase4ShotsMade = records.length ? phaseSums.phase4Made / records.length : 0;
+  const avgPhase5ShotsAttempted = records.length ? phaseSums.phase5Attempted / records.length : 0;
+  const avgPhase5ShotsMade = records.length ? phaseSums.phase5Made / records.length : 0;
+
   // Calculate preferred pickup location from teleop phases
   const pickupLocationCounts: { [key: number]: number } = {};
   for (const record of records) {
@@ -173,6 +260,24 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
     }
   }
 
+  // Calculate most common path (Bump or Trench) — excludes NONE (0)
+  const pathCounts: { [key: number]: number } = {};
+  for (const record of records) {
+    if (record.preferredPath !== undefined && record.preferredPath !== 0) {
+      pathCounts[record.preferredPath] = (pathCounts[record.preferredPath] || 0) + 1;
+    }
+  }
+
+  let mostCommonPath = 'N/A';
+  let maxPathCount = 0;
+  for (const [path, count] of Object.entries(pathCounts)) {
+    if (count > maxPathCount) {
+      maxPathCount = count;
+      const p = parseInt(path);
+      mostCommonPath = p === 1 ? 'Bump' : p === 2 ? 'Trench' : 'N/A';
+    }
+  }
+
   return {
     team,
     matchRecords: records,
@@ -183,6 +288,18 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
     avgTeleopShotsAttempted,
     avgTeleopAccuracy,
     avgTotalMainScore,
+    avgPhase0ShotsAttempted,
+    avgPhase0ShotsMade,
+    avgPhase1ShotsAttempted,
+    avgPhase1ShotsMade,
+    avgPhase2ShotsAttempted,
+    avgPhase2ShotsMade,
+    avgPhase3ShotsAttempted,
+    avgPhase3ShotsMade,
+    avgPhase4ShotsAttempted,
+    avgPhase4ShotsMade,
+    avgPhase5ShotsAttempted,
+    avgPhase5ShotsMade,
     canClimbLevel1,
     canClimbLevel2,
     canClimbLevel3,
@@ -193,6 +310,7 @@ export function generateTeamProfile(records: MatchRecord[]): TeamProfile {
     neutralZoneFeedingTeleop,
     preferredPickupLocation,
     mostCommonStartingPosition,
+    mostCommonPath,
   };
 }
 

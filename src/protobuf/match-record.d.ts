@@ -48,6 +48,12 @@ export namespace troyargonautsprotobuf {
 
         /** TeleopPhaseRecord pickupLocation */
         pickupLocation?: (troyargonautsprotobuf.PickupLocation|null);
+
+        /** TeleopPhaseRecord shotsMissed */
+        shotsMissed?: (number|null);
+
+        /** TeleopPhaseRecord shotsAttempted */
+        shotsAttempted?: (number|null);
     }
 
     /** Represents a TeleopPhaseRecord. */
@@ -67,6 +73,12 @@ export namespace troyargonautsprotobuf {
 
         /** TeleopPhaseRecord pickupLocation. */
         public pickupLocation: troyargonautsprotobuf.PickupLocation;
+
+        /** TeleopPhaseRecord shotsMissed. */
+        public shotsMissed: number;
+
+        /** TeleopPhaseRecord shotsAttempted. */
+        public shotsAttempted: number;
 
         /**
          * Creates a new TeleopPhaseRecord instance using the specified properties.
